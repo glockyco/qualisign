@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  postgresdb:
+    build:
+      context: postgresdb
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      - POSTGRES_PASSWORD
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    networks:
+      - qualisign
+
+  pgadmin:
+    build:
+      context: pgadmin
+    ports:
+      - ${PGADMIN_PORT}:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL
+      - PGADMIN_DEFAULT_PASSWORD
+    depends_on:
+      - postgresdb
+    networks:
+      - qualisign
+
+volumes:
+  database_data:
+
+networks:
+  qualisign:
