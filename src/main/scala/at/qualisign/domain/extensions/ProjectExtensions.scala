@@ -32,6 +32,10 @@ object ProjectExtensions {
       new File(rootDirectory, "binaries")
     }
 
+    def javaVersionFile: File = {
+      new File(rootDirectory, "java_version.txt")
+    }
+
     def languagesDirectory: File = {
       new File(rootDirectory, "languages")
     }
