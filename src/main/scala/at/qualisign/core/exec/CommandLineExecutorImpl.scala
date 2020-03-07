@@ -1,21 +1,19 @@
 package at.qualisign.core.exec
 
-import java.io.OutputStream
+import java.io.{InputStream, OutputStream}
 
 import org.apache.commons.exec.{CommandLine, DefaultExecutor, PumpStreamHandler}
 
-class CommandLineExecutorImpl(
-  out: OutputStream = System.out,
-  err: OutputStream = System.err,
-) extends CommandLineExecutor {
+class CommandLineExecutorImpl extends CommandLineExecutor {
 
   @throws[ExecuteException]("if execution of the command failed")
   override def execute(
     command: String,
     out: OutputStream = System.out,
     err: OutputStream = System.err,
+    input: InputStream = null,
   ): Unit = {
-    execute(CommandLine.parse(command), out, err)
+    execute(CommandLine.parse(command), out, err, input)
   }
 
   @throws[ExecuteException]("if execution of the command failed")
@@ -23,9 +21,10 @@ class CommandLineExecutorImpl(
     command: CommandLine,
     out: OutputStream,
     err: OutputStream,
+    input: InputStream,
   ): Unit = {
     val executor: DefaultExecutor = new DefaultExecutor
-    executor.setStreamHandler(new PumpStreamHandler(out, err))
+    executor.setStreamHandler(new PumpStreamHandler(out, err, input))
 
     // @TODO: log command line output/errors
     //executor.setStreamHandler(new PumpStreamHandler(System.out, System.err, null))
