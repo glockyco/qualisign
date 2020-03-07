@@ -146,6 +146,7 @@ object RowExtensions {
         row.metricsPersistenceStatus,
         row.patternDetectionStatus,
         row.patternPersistenceStatus,
+        row.javaVersionDetectionStatus,
       )
     }
   }

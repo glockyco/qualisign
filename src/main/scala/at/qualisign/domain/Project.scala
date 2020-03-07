@@ -23,6 +23,7 @@ object Project {
       ProcessingStatus.PENDING,
       ProcessingStatus.PENDING,
       ProcessingStatus.PENDING,
+      ProcessingStatus.PENDING,
     )
   }
 }
@@ -41,4 +42,5 @@ case class Project(
   metricsPersistenceStatus: Int,
   patternDetectionStatus: Int,
   patternPersistenceStatus: Int,
+  javaVersionDetectionStatus: Int,
 )

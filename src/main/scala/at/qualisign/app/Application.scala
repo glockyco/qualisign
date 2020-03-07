@@ -11,6 +11,7 @@ import at.qualisign.patterns._
 import at.qualisign.persistence.ProjectRepository
 import at.qualisign.persistence.postgresql.PostgresProjectRepository
 import at.qualisign.unpacking._
+import at.qualisign.version._
 import slick.jdbc.PostgresProfile.api._
 
 import scala.collection.parallel.CollectionConverters._
@@ -39,6 +40,11 @@ object Application extends App {
 
   val jarUnpacker: JarUnpacker = new JarUnpackerImpl(executor)
   val unpacker: MavenProjectUnpacker = new MavenProjectUnpackerImpl(jarUnpacker)
+
+  // --- Java Version Detection ---
+
+  val javapDetector: JavapVersionDetector = new JavapVersionDetectorImpl(executor)
+  val javaVersionDetector: MavenProjectJavaVersionDetector = new MavenProjectJavaVersionDetectorImpl(javapDetector)
 
   // --- Programming Language Detection ---
 
@@ -72,13 +78,14 @@ object Application extends App {
   val processor = new ProjectProcessor(
     downloader,
     unpacker,
-    projectRepository,
+    javaVersionDetector,
     languageDetector,
     languagePersistence,
     metricsCalculator,
     metricsPersistence,
     patternDetector,
     patternPersistence,
+    projectRepository,
   )
 
   // ---------------------------------------------------------------------------
@@ -132,13 +139,14 @@ object Application extends App {
 class ProjectProcessor(
   downloader: MavenProjectDownloader,
   unpacker: MavenProjectUnpacker,
-  projectRepository: ProjectRepository,
+  javaVersionDetector: MavenProjectJavaVersionDetector,
   languageDetector: MavenProjectLanguageDetector,
   languagePersistence: MavenProjectLanguagePersistence,
   metricsCalculator: MavenProjectMetricsCalculator,
   metricsPersistence: MavenProjectMetricsPersistence,
   patternDetector: MavenProjectPatternDetector,
-  patternPersistence: MavenProjectPatternPersistence
+  patternPersistence: MavenProjectPatternPersistence,
+  projectRepository: ProjectRepository,
 ) {
   def processProjects(projects: Seq[Project]): Seq[Try[Unit]] = {
     projects.zipWithIndex.par.map(e => processProject(e._1, e._2)).seq
@@ -178,6 +186,10 @@ class ProjectProcessor(
       // --- Project/Package/Class/Method Persistence ---
 
       // @TODO: Extract PPCM persistence from metrics calculation.
+
+      // --- Java Version Detection ---
+
+      new JavaVersionDetectionStep(javaVersionDetector),
 
       // --- Programming Language Detection ---
 
