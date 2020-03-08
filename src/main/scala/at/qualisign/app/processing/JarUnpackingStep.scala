@@ -17,7 +17,7 @@ class JarUnpackingStep(
     }
   }
 
-  override def isPending(project: Project): Boolean = {
-    project.jarUnpackingStatus == PENDING
+  override def status(project: Project): Int = {
+    project.jarUnpackingStatus
   }
 }

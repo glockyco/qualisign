@@ -17,7 +17,7 @@ class MetricsCalculationStep(
     }
   }
 
-  override def isPending(project: Project): Boolean = {
-    project.metricsCalculationStatus == PENDING
+  override def status(project: Project): Int = {
+    project.metricsCalculationStatus
   }
 }

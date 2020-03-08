@@ -17,7 +17,7 @@ class JavaVersionDetectionStep(
     }
   }
 
-  override def isPending(project: Project): Boolean = {
-    project.javaVersionDetectionStatus == PENDING
+  override def status(project: Project): Int = {
+    project.javaVersionDetectionStatus
   }
 }

@@ -17,7 +17,7 @@ class PatternDetectionStep(
     }
   }
 
-  override def isPending(project: Project): Boolean = {
-    project.patternDetectionStatus == PENDING
+  override def status(project: Project): Int = {
+    project.patternDetectionStatus
   }
 }
