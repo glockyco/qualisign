@@ -17,7 +17,7 @@ class LanguagePersistenceStep(
     }
   }
 
-  override def isPending(project: Project): Boolean = {
-    project.languagePersistenceStatus == PENDING
+  override def status(project: Project): Int = {
+    project.languagePersistenceStatus
   }
 }

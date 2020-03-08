@@ -160,7 +160,7 @@ class ProjectProcessor(
 
   def processProject(project: Project, index: Int): Try[Unit] = {
     var p: Project = project
-    val steps: Seq[ProcessingStep] = processingSteps.filter(step => step.isPending(project))
+    val steps: Seq[ProcessingStep] = processingSteps.filter(step => step.status(project) == ProcessingStatus.PENDING)
 
     for (step: ProcessingStep <- steps) {
       val result: Either[(Project, Exception), Project] = step.execute(p)

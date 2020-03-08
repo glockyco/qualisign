@@ -17,7 +17,7 @@ class LanguageDetectionStep(
     }
   }
 
-  override def isPending(project: Project): Boolean = {
-    project.languageDetectionStatus == PENDING
+  override def status(project: Project): Int = {
+    project.languageDetectionStatus
   }
 }

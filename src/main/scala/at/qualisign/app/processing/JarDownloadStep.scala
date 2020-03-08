@@ -17,7 +17,7 @@ class JarDownloadStep(
     }
   }
 
-  override def isPending(project: Project): Boolean = {
-    project.jarDownloadStatus == PENDING
+  override def status(project: Project): Int = {
+    project.jarDownloadStatus
   }
 }
