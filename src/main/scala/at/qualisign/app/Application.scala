@@ -2,7 +2,7 @@ package at.qualisign.app
 
 import at.qualisign.app.processing._
 import at.qualisign.core.exec._
-import at.qualisign.domain.Project
+import at.qualisign.domain.{ProcessingStatus, Project}
 import at.qualisign.downloading._
 import at.qualisign.indexing._
 import at.qualisign.languages._
@@ -155,12 +155,22 @@ class ProjectProcessor(
   projectRepository: ProjectRepository,
 ) {
   def processProjects(projects: Seq[Project]): Seq[Try[Unit]] = {
-    projects.zipWithIndex.par.map(e => processProject(e._1, e._2)).seq
+    def hasFailedProcessingSteps(project: Project): Boolean = {
+      processingSteps.exists(step => step.status(project) == ProcessingStatus.FAILED)
+    }
+
+    val filteredProjects = projects.filter(!hasFailedProcessingSteps(_))
+    val result = filteredProjects.zipWithIndex.par.map(e => processProject(e._1, e._2)).seq
+    result
   }
 
   def processProject(project: Project, index: Int): Try[Unit] = {
+    def requiredSteps(project: Project): Seq[ProcessingStep] = {
+      processingSteps.filter(step => step.status(project) == ProcessingStatus.PENDING)
+    }
+
     var p: Project = project
-    val steps: Seq[ProcessingStep] = processingSteps.filter(step => step.status(project) == ProcessingStatus.PENDING)
+    val steps = requiredSteps(project)
 
     for (step: ProcessingStep <- steps) {
       val result: Either[(Project, Exception), Project] = step.execute(p)
