@@ -531,18 +531,20 @@ trait Tables {
    *  @param metricsPersistenceStatus Database column metrics_persistence_status SqlType(int4)
    *  @param patternDetectionStatus Database column pattern_detection_status SqlType(int4)
    *  @param patternPersistenceStatus Database column pattern_persistence_status SqlType(int4)
-   *  @param javaVersionDetectionStatus Database column java_version_detection_status SqlType(int4) */
-  case class ProjectsRow(name: String, groupId: String, artifactId: String, version: String, hasSources: Boolean, jarsDownloadStatus: Int, jarsUnpackingStatus: Int, languageDetectionStatus: Int, languagePersistenceStatus: Int, metricsCalculationStatus: Int, metricsPersistenceStatus: Int, patternDetectionStatus: Int, patternPersistenceStatus: Int, javaVersionDetectionStatus: Int)
+   *  @param javaVersionDetectionStatus Database column java_version_detection_status SqlType(int4)
+   *  @param javaVersionPersistenceStatus Database column java_version_persistence_status SqlType(int4)
+   *  @param javaVersion Database column java_version SqlType(int4), Default(None) */
+  case class ProjectsRow(name: String, groupId: String, artifactId: String, version: String, hasSources: Boolean, jarsDownloadStatus: Int, jarsUnpackingStatus: Int, languageDetectionStatus: Int, languagePersistenceStatus: Int, metricsCalculationStatus: Int, metricsPersistenceStatus: Int, patternDetectionStatus: Int, patternPersistenceStatus: Int, javaVersionDetectionStatus: Int, javaVersionPersistenceStatus: Int, javaVersion: Option[Int] = None)
   /** GetResult implicit for fetching ProjectsRow objects using plain SQL queries */
-  implicit def GetResultProjectsRow(implicit e0: GR[String], e1: GR[Boolean], e2: GR[Int]): GR[ProjectsRow] = GR{
+  implicit def GetResultProjectsRow(implicit e0: GR[String], e1: GR[Boolean], e2: GR[Int], e3: GR[Option[Int]]): GR[ProjectsRow] = GR{
     prs => import prs._
-    ProjectsRow.tupled((<<[String], <<[String], <<[String], <<[String], <<[Boolean], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
+    ProjectsRow.tupled((<<[String], <<[String], <<[String], <<[String], <<[Boolean], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<?[Int]))
   }
   /** Table description of table projects. Objects of this class serve as prototypes for rows in queries. */
   class Projects(_tableTag: Tag) extends profile.api.Table[ProjectsRow](_tableTag, "projects") {
-    def * = (name, groupId, artifactId, version, hasSources, jarsDownloadStatus, jarsUnpackingStatus, languageDetectionStatus, languagePersistenceStatus, metricsCalculationStatus, metricsPersistenceStatus, patternDetectionStatus, patternPersistenceStatus, javaVersionDetectionStatus) <> (ProjectsRow.tupled, ProjectsRow.unapply)
+    def * = (name, groupId, artifactId, version, hasSources, jarsDownloadStatus, jarsUnpackingStatus, languageDetectionStatus, languagePersistenceStatus, metricsCalculationStatus, metricsPersistenceStatus, patternDetectionStatus, patternPersistenceStatus, javaVersionDetectionStatus, javaVersionPersistenceStatus, javaVersion) <> (ProjectsRow.tupled, ProjectsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(name), Rep.Some(groupId), Rep.Some(artifactId), Rep.Some(version), Rep.Some(hasSources), Rep.Some(jarsDownloadStatus), Rep.Some(jarsUnpackingStatus), Rep.Some(languageDetectionStatus), Rep.Some(languagePersistenceStatus), Rep.Some(metricsCalculationStatus), Rep.Some(metricsPersistenceStatus), Rep.Some(patternDetectionStatus), Rep.Some(patternPersistenceStatus), Rep.Some(javaVersionDetectionStatus))).shaped.<>({r=>import r._; _1.map(_=> ProjectsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(name), Rep.Some(groupId), Rep.Some(artifactId), Rep.Some(version), Rep.Some(hasSources), Rep.Some(jarsDownloadStatus), Rep.Some(jarsUnpackingStatus), Rep.Some(languageDetectionStatus), Rep.Some(languagePersistenceStatus), Rep.Some(metricsCalculationStatus), Rep.Some(metricsPersistenceStatus), Rep.Some(patternDetectionStatus), Rep.Some(patternPersistenceStatus), Rep.Some(javaVersionDetectionStatus), Rep.Some(javaVersionPersistenceStatus), javaVersion)).shaped.<>({r=>import r._; _1.map(_=> ProjectsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column name SqlType(varchar), PrimaryKey */
     val name: Rep[String] = column[String]("name", O.PrimaryKey)
@@ -572,6 +574,10 @@ trait Tables {
     val patternPersistenceStatus: Rep[Int] = column[Int]("pattern_persistence_status")
     /** Database column java_version_detection_status SqlType(int4) */
     val javaVersionDetectionStatus: Rep[Int] = column[Int]("java_version_detection_status")
+    /** Database column java_version_persistence_status SqlType(int4) */
+    val javaVersionPersistenceStatus: Rep[Int] = column[Int]("java_version_persistence_status")
+    /** Database column java_version SqlType(int4), Default(None) */
+    val javaVersion: Rep[Option[Int]] = column[Option[Int]]("java_version", O.Default(None))
   }
   /** Collection-like TableQuery object for table Projects */
   lazy val Projects = new TableQuery(tag => new Projects(tag))

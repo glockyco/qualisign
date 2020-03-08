@@ -24,6 +24,8 @@ object Project {
       ProcessingStatus.PENDING,
       ProcessingStatus.PENDING,
       ProcessingStatus.PENDING,
+      ProcessingStatus.PENDING,
+      None,
     )
   }
 }
@@ -43,4 +45,6 @@ case class Project(
   patternDetectionStatus: Int,
   patternPersistenceStatus: Int,
   javaVersionDetectionStatus: Int,
+  javaVersionPersistenceStatus: Int,
+  javaVersion: Option[Int],
 )

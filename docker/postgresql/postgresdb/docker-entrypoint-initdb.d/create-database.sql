@@ -15,6 +15,8 @@ create table projects
     pattern_detection_status int not null,
     pattern_persistence_status int not null,
     java_version_detection_status int not null,
+    java_version_persistence_status int not null,
+    java_version int not null,
 
     constraint projects_pkey
         primary key (name)

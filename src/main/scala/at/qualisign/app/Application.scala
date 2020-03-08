@@ -46,6 +46,10 @@ object Application extends App {
   val javapDetector: JavapVersionDetector = new JavapVersionDetectorImpl(executor)
   val javaVersionDetector: MavenProjectJavaVersionDetector = new MavenProjectJavaVersionDetectorImpl(javapDetector)
 
+  val javapVersionReader: JavapVersionReader = new JavapVersionReaderImpl
+  val javapVersionPersistence: JavapVersionPersistence = new JavapVersionPersistenceImpl(database)
+  val javaVersionPersistence: MavenProjectJavaVersionPersistence = new MavenProjectJavaVersionPersistenceImpl(javapVersionReader, javapVersionPersistence)
+
   // --- Programming Language Detection ---
 
   val enryDetector: EnryLanguageDetector = new EnryLanguageDetectorImpl(executor)
@@ -78,13 +82,14 @@ object Application extends App {
   val processor = new ProjectProcessor(
     downloader,
     unpacker,
-    javaVersionDetector,
     languageDetector,
     languagePersistence,
     metricsCalculator,
     metricsPersistence,
     patternDetector,
     patternPersistence,
+    javaVersionDetector,
+    javaVersionPersistence,
     projectRepository,
   )
 
@@ -139,13 +144,14 @@ object Application extends App {
 class ProjectProcessor(
   downloader: MavenProjectDownloader,
   unpacker: MavenProjectUnpacker,
-  javaVersionDetector: MavenProjectJavaVersionDetector,
   languageDetector: MavenProjectLanguageDetector,
   languagePersistence: MavenProjectLanguagePersistence,
   metricsCalculator: MavenProjectMetricsCalculator,
   metricsPersistence: MavenProjectMetricsPersistence,
   patternDetector: MavenProjectPatternDetector,
   patternPersistence: MavenProjectPatternPersistence,
+  javaVersionDetector: MavenProjectJavaVersionDetector,
+  javaVersionPersistence: MavenProjectJavaVersionPersistence,
   projectRepository: ProjectRepository,
 ) {
   def processProjects(projects: Seq[Project]): Seq[Try[Unit]] = {
@@ -190,6 +196,7 @@ class ProjectProcessor(
       // --- Java Version Detection ---
 
       new JavaVersionDetectionStep(javaVersionDetector),
+      new JavaVersionPersistenceStep(javaVersionPersistence),
 
       // --- Programming Language Detection ---
 
