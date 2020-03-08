@@ -22,6 +22,8 @@ object DomainExtensions {
         project.patternDetectionStatus,
         project.patternPersistenceStatus,
         project.javaVersionDetectionStatus,
+        project.javaVersionPersistenceStatus,
+        project.javaVersion,
       )
     }
   }
