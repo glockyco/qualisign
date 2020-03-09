@@ -5,3 +5,4 @@ jdk:
   - openjdk8
 notifications:
   email: false
+  slack: qualisignworkspace:sEqEpFIlCkPZBGFqviXGTo6Y
