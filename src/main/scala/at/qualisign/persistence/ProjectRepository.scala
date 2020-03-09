@@ -8,5 +8,6 @@ trait ProjectRepository {
   def save(project: Project): Future[Unit]
   def saveAll(projects: Seq[Project]): Future[Unit]
   def readAllWithSources(): Future[Seq[Project]]
+  def readEligibleForAnalysis(): Future[Seq[Project]]
   def insertIfNotExists(projects: Seq[Project]): Future[Unit]
 }

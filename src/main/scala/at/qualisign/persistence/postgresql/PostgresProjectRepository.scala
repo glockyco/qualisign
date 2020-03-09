@@ -29,6 +29,17 @@ class PostgresProjectRepository(database: Database) extends ProjectRepository {
     ) yield project
   }
 
+  override def readEligibleForAnalysis(): Future[Seq[Project]] = {
+    val joined = Tables.Projects join Tables.ProjectLanguages on (_.name === _.project)
+    val filtered = joined filter { case (projects, languages) =>  projects.javaVersion <= 52 && languages.name === "Java" }
+    val action = for { (projects, _) <- filtered } yield projects
+
+    for {
+      rows <- database.run(action.result);
+      projects <- Future.sequence(rows.map(row => Future(row.asDomain)))
+    } yield projects
+  }
+
   def insertIfNotExists(projects: Seq[Project]): Future[Unit] = {
     val insertIfNotExists = (project: Project) => {
       Tables.Projects.filter(_.name === project.name).exists.result.flatMap {

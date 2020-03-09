@@ -131,14 +131,7 @@ object Application extends App {
   Await.ready(projectRepository.insertIfNotExists(projectsInIndex), Duration.Inf)
   println("done!")
 
-  val batchSize = 100
-  val slice = 0
-
-  print("Reading projects...")
-  val projects: Seq[Project] = Await.result(projectRepository.readAllWithSources(), Duration.Inf).slice(slice * batchSize, (slice + 1) * batchSize)
-  println("done!")
-
-  processor.processProjects(projects)
+  processor.processProjects()
 }
 
 class ProjectProcessor(
@@ -154,25 +147,111 @@ class ProjectProcessor(
   javaVersionPersistence: MavenProjectJavaVersionPersistence,
   projectRepository: ProjectRepository,
 ) {
-  def processProjects(projects: Seq[Project]): Seq[Try[Unit]] = {
+  def processProjects(): Unit = {
     def hasFailedProcessingSteps(project: Project): Boolean = {
       processingSteps.exists(step => step.status(project) == ProcessingStatus.FAILED)
     }
 
-    val filteredProjects = projects.filter(!hasFailedProcessingSteps(_))
-    val result = filteredProjects.zipWithIndex.par.map(e => processProject(e._1, e._2)).seq
-    result
-  }
+    print("Reading projects...")
+    val projects: Seq[Project] = Await.result(projectRepository.readAllWithSources(), Duration.Inf).slice(0, 1000)
+    println("done!")
 
-  def processProject(project: Project, index: Int): Try[Unit] = {
-    def requiredSteps(project: Project): Seq[ProcessingStep] = {
-      processingSteps.filter(step => step.status(project) == ProcessingStatus.PENDING)
+    //--------------------------------------------------------------------------
+
+    def time[R](block: => R): R = {
+      val t0 = System.nanoTime()
+      val result = block    // call-by-name
+      val t1 = System.nanoTime()
+      println("Elapsed time: " + (t1 - t0) + "ns")
+      result
     }
 
-    var p: Project = project
-    val steps = requiredSteps(project)
+    time { projects.par.foreach { project: Project =>
+      if (hasFailedProcessingSteps(project)) {
+        println(s"Skipped: ${project.name}")
+      } else {
+        (for (
+          p1 <- executeProjectRetrieval(project);
+          p2 <- executeJavaVersionDetection(p1);
+          p3 <- executeProgrammingLanguageDetection(p2)
+        ) yield p3) match {
+          case Failure(exception) => println(s"Failure: ${project.name}\n$exception")
+          case Success(_) => println(s"Success: ${project.name}")
+        }
+      }
+    } }
 
-    for (step: ProcessingStep <- steps) {
+    //--------------------------------------------------------------------------
+
+    print("Reading eligible projects...")
+    val eligibleProjects: Seq[Project] = Await.result(projectRepository.readEligibleForAnalysis(), Duration.Inf)
+    println("done!")
+
+    time { eligibleProjects.par.foreach { project: Project =>
+      if (hasFailedProcessingSteps(project)) {
+        println(s"Skipped: ${project.name}")
+      } else {
+        (for (
+          p4 <- executeMetricsCalculation(project);
+          p5 <- executePatternDetection(p4)
+        ) yield p5) match {
+          case Failure(exception) => println(s"Failure: ${project.name}\n$exception")
+          case Success(_) => println(s"Success: ${project.name}")
+        }
+      }
+    } }
+  }
+
+  def executeProjectRetrieval(project: Project): Try[Project] = {
+    val steps = Seq(
+      new JarDownloadStep(downloader),
+      new JarUnpackingStep(unpacker),
+    )
+
+    executeSteps(project, steps)
+  }
+
+  def executeJavaVersionDetection(project: Project): Try[Project] = {
+    val steps = Seq(
+      new JavaVersionDetectionStep(javaVersionDetector),
+      new JavaVersionPersistenceStep(javaVersionPersistence),
+    )
+
+    executeSteps(project, steps)
+  }
+
+  def executeProgrammingLanguageDetection(project: Project): Try[Project] = {
+    val steps = Seq(
+      new LanguageDetectionStep(languageDetector),
+      new LanguagePersistenceStep(languagePersistence),
+    )
+
+    executeSteps(project, steps)
+  }
+
+  def executeMetricsCalculation(project: Project): Try[Project] = {
+    val steps = Seq(
+      new MetricsCalculationStep(metricsCalculator),
+      new MetricsPersistenceStep(metricsPersistence),
+    )
+
+    executeSteps(project, steps)
+  }
+
+  def executePatternDetection(project: Project): Try[Project] = {
+    val steps = Seq(
+      new PatternDetectionStep(patternDetector),
+      new PatternPersistenceStep(patternPersistence),
+    )
+
+    executeSteps(project, steps)
+  }
+
+  def executeSteps(project: Project, steps: Seq[ProcessingStep]): Try[Project] = {
+    val filteredSteps = steps.filter(step => step.status(project) == ProcessingStatus.PENDING)
+    var p: Project = project
+
+    for (step: ProcessingStep <- filteredSteps) {
       val result: Either[(Project, Exception), Project] = step.execute(p)
 
       result match {
@@ -183,13 +262,11 @@ class ProjectProcessor(
         case Left((processedProject, exception)) =>
           p = processedProject
           Await.ready(projectRepository.save(p), Duration.Inf)
-          println(s"Error ($index): ${p.name}, $exception")
           return Failure(exception)
       }
     }
 
-    println(s"Success ($index): ${project.name}")
-    Success()
+    Success(p)
   }
 
   def processingSteps: Seq[ProcessingStep] = {
