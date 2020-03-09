@@ -2,11 +2,12 @@ package at.qualisign.core.exec
 
 import java.io.{InputStream, OutputStream}
 
-import org.apache.commons.exec.{CommandLine, DefaultExecutor, PumpStreamHandler}
+import org.apache.commons.exec.{CommandLine, DefaultExecutor, ExecuteWatchdog, PumpStreamHandler}
+
+import scala.util.{Failure, Success, Try}
 
 class CommandLineExecutorImpl extends CommandLineExecutor {
 
-  @throws[ExecuteException]("if execution of the command failed")
   override def execute(
     command: String,
     out: OutputStream = System.out,
@@ -16,7 +17,6 @@ class CommandLineExecutorImpl extends CommandLineExecutor {
     execute(CommandLine.parse(command), out, err, input)
   }
 
-  @throws[ExecuteException]("if execution of the command failed")
   private def execute(
     command: CommandLine,
     out: OutputStream,
@@ -24,15 +24,22 @@ class CommandLineExecutorImpl extends CommandLineExecutor {
     input: InputStream,
   ): Unit = {
     val executor: DefaultExecutor = new DefaultExecutor
-    executor.setStreamHandler(new PumpStreamHandler(out, err, input))
 
-    // @TODO: log command line output/errors
-    //executor.setStreamHandler(new PumpStreamHandler(System.out, System.err, null))
+    val streamHandler = new PumpStreamHandler(out, err, input)
+    executor.setStreamHandler(streamHandler)
+
+    val watchdog = new ExecuteWatchdog(120000)
+    executor.setWatchdog(watchdog)
 
     try {
       executor.execute(command)
     } catch {
-      case exception: Exception => throw new ExecuteException(exception)
+      case exception: Exception =>
+        if (watchdog.killedProcess()) {
+          throw new TimeoutException(exception)
+        } else {
+          throw new ExecuteException(exception)
+        }
     }
   }
 }
