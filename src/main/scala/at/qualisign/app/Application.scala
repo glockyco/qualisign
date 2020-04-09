@@ -7,6 +7,7 @@ import at.qualisign.downloading._
 import at.qualisign.indexing._
 import at.qualisign.languages._
 import at.qualisign.metrics._
+import at.qualisign.metrics.jhawk._
 import at.qualisign.patterns._
 import at.qualisign.persistence.ProjectRepository
 import at.qualisign.persistence.postgresql.PostgresProjectRepository
