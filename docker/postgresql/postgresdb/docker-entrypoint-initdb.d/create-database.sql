@@ -33,16 +33,16 @@ create table project_languages
         foreign key (project) references projects on delete cascade
 );
 
-create table project_metrics
+create table project_metrics_jhawk
 (
     project varchar not null,
     tl int not null,
     bl int not null,
     ci int not null,
     co int not null,
-    constraint project_metrics_pkey
+    constraint project_metrics_jhawk_pkey
         primary key (project),
-    constraint project_metrics_project_fkey
+    constraint project_metrics_jhawk_project_fkey
         foreign key (project) references projects on delete cascade
 );
 
@@ -56,7 +56,7 @@ create table pakkages
         foreign key (project) references projects on delete cascade
 );
 
-create table pakkage_metrics
+create table pakkage_metrics_jhawk
 (
     pakkage varchar not null,
     abstractness float not null,
@@ -80,9 +80,9 @@ create table pakkage_metrics
     number_of_statements int not null,
     rvf int not null,
     tcc int not null,
-    constraint pakkage_metrics_pkey
+    constraint pakkage_metrics_jhawk_pkey
         primary key (pakkage),
-    constraint pakkage_metrics_pakkage_fkey
+    constraint pakkage_metrics_jhawk_pakkage_fkey
         foreign key (pakkage) references pakkages on delete cascade
 );
 
@@ -96,7 +96,34 @@ create table clazzes
         foreign key (pakkage) references pakkages on delete cascade
 );
 
-create table clazz_metrics
+create table clazz_metrics_ckjm
+(
+    clazz varchar not null,
+    amc float not null,
+    ca int not null,
+    cam float not null,
+    cbm int not null,
+    cbo int not null,
+    ce int not null,
+    dam float not null,
+    dit int not null,
+    ic int not null,
+    lcom int not null,
+    lcom3 float not null,
+    loc int not null,
+    mfa float not null,
+    moa int not null,
+    noc int not null,
+    npm int not null,
+    rfc int not null,
+    wmc int not null,
+    constraint clazz_metrics_ckjm_pkey
+        primary key (clazz),
+    constraint clazz_metrics_ckjm_clazz_fkey
+        foreign key (clazz) references clazzes on delete cascade
+);
+
+create table clazz_metrics_jhawk
 (
     clazz varchar not null,
     avcc float not null,
@@ -131,9 +158,9 @@ create table clazz_metrics
     specialization_ration float not null,
     tcc int not null,
     unweighted_class_size int not null,
-    constraint clazz_metrics_pkey
+    constraint clazz_metrics_jhawk_pkey
         primary key (clazz),
-    constraint clazz_metrics_clazz_fkey
+    constraint clazz_metrics_jhawk_clazz_fkey
         foreign key (clazz) references clazzes on delete cascade
 );
 
@@ -147,7 +174,17 @@ create table methods
         foreign key (clazz) references clazzes on delete cascade
 );
 
-create table method_metrics
+create table method_metrics_ckjm
+(
+    method varchar not null,
+    cc int not null,
+    constraint method_metrics_ckjm_pkey
+        primary key (method),
+    constraint method_metrics_ckjm_method_fkey
+        foreign key (method) references methods on delete cascade
+);
+
+create table method_metrics_jhawk
 (
     method varchar not null,
     cyclomatic_complexity int not null,
@@ -171,9 +208,9 @@ create table method_metrics
     number_of_variable_declarations int not null,
     number_of_variable_references int not null,
     total_nesting int not null,
-    constraint method_metrics_pkey
+    constraint method_metrics_jhawk_pkey
         primary key (method),
-    constraint method_metrics_method_fkey
+    constraint method_metrics_jhawk_method_fkey
         foreign key (method) references methods on delete cascade
 );
 

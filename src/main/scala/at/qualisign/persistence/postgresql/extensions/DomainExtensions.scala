@@ -38,9 +38,9 @@ object DomainExtensions {
     }
   }
 
-  implicit class ProjectMetricsAsRowExtension(metrics: ProjectMetrics) {
-    def asRow: Tables.ProjectMetricsRow = {
-      Tables.ProjectMetricsRow(
+  implicit class ProjectMetricsJHawkAsRowExtension(metrics: ProjectMetricsJHawk) {
+    def asRow: Tables.ProjectMetricsJhawkRow = {
+      Tables.ProjectMetricsJhawkRow(
         metrics.project,
         metrics.tl,
         metrics.bl,
@@ -59,9 +59,9 @@ object DomainExtensions {
     }
   }
 
-  implicit class PakkageMetricsAsRowExtension(metrics: PakkageMetrics) {
-    def asRow: Tables.PakkageMetricsRow = {
-      Tables.PakkageMetricsRow(
+  implicit class PakkageMetricsJHawkAsRowExtension(metrics: PakkageMetricsJHawk) {
+    def asRow: Tables.PakkageMetricsJhawkRow = {
+      Tables.PakkageMetricsJhawkRow(
         metrics.pakkage,
         metrics.abstractness,
         metrics.avcc,
@@ -97,9 +97,35 @@ object DomainExtensions {
     }
   }
 
-  implicit class ClazzMetricsAsRowExtension(metrics: ClazzMetrics) {
-    def asRow: Tables.ClazzMetricsRow = {
-      Tables.ClazzMetricsRow(
+  implicit class ClazzMetricsCkjmAsRowExtension(metrics: ClazzMetricsCkjm) {
+    def asRow: Tables.ClazzMetricsCkjmRow = {
+      Tables.ClazzMetricsCkjmRow(
+        metrics.clazz,
+        metrics.amc,
+        metrics.ca,
+        metrics.cam,
+        metrics.cbm,
+        metrics.cbo,
+        metrics.ce,
+        metrics.dam,
+        metrics.dit,
+        metrics.ic,
+        metrics.lcom,
+        metrics.lcom3,
+        metrics.loc,
+        metrics.mfa,
+        metrics.moa,
+        metrics.noc,
+        metrics.npm,
+        metrics.rfc,
+        metrics.wmc,
+      )
+    }
+  }
+
+  implicit class ClazzMetricsJHawkAsRowExtension(metrics: ClazzMetricsJHawk) {
+    def asRow: Tables.ClazzMetricsJhawkRow = {
+      Tables.ClazzMetricsJhawkRow(
         metrics.clazz,
         metrics.avcc,
         metrics.cbo,
@@ -146,9 +172,18 @@ object DomainExtensions {
     }
   }
 
-  implicit class MethodMetricsAsRowExtension(metrics: MethodMetrics) {
-    def asRow: Tables.MethodMetricsRow = {
-      Tables.MethodMetricsRow(
+  implicit class MethodMetricsCkjmAsRowExtension(metrics: MethodMetricsCkjm) {
+    def asRow: Tables.MethodMetricsCkjmRow = {
+      Tables.MethodMetricsCkjmRow(
+        metrics.method,
+        metrics.cc,
+      )
+    }
+  }
+
+  implicit class MethodMetricsJHawkAsRowExtension(metrics: MethodMetricsJHawk) {
+    def asRow: Tables.MethodMetricsJhawkRow = {
+      Tables.MethodMetricsJhawkRow(
         metrics.method,
         metrics.cyclomaticComplexity,
         metrics.halsteadBugs,

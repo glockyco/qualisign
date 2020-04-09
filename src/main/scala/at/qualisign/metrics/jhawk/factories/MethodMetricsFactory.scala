@@ -1,11 +1,11 @@
 package at.qualisign.metrics.jhawk.factories
 
-import at.qualisign.domain.{Method, MethodMetrics}
+import at.qualisign.domain.{Method, MethodMetricsJHawk}
 import at.qualisign.metrics.jhawk.jaxb.MethodMetricsType
 
 object MethodMetricsFactory {
-  def create(method: Method, methodMetricsType: MethodMetricsType): MethodMetrics = {
-    MethodMetrics(
+  def create(method: Method, methodMetricsType: MethodMetricsType): MethodMetricsJHawk = {
+    MethodMetricsJHawk(
       method.name,
       methodMetricsType.getCyclomaticComplexity.intValue,
       methodMetricsType.getHalsteadBugs,

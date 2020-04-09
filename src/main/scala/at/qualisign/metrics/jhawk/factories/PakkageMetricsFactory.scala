@@ -1,11 +1,11 @@
 package at.qualisign.metrics.jhawk.factories
 
-import at.qualisign.domain.{Pakkage, PakkageMetrics}
+import at.qualisign.domain.{Pakkage, PakkageMetricsJHawk}
 import at.qualisign.metrics.jhawk.jaxb.PackageMetricsType
 
 object PakkageMetricsFactory {
-  def create(pakkage: Pakkage, packageMetricsType: PackageMetricsType): PakkageMetrics = {
-    PakkageMetrics(
+  def create(pakkage: Pakkage, packageMetricsType: PackageMetricsType): PakkageMetricsJHawk = {
+    PakkageMetricsJHawk(
       pakkage.name,
       packageMetricsType.getAbstractness,
       packageMetricsType.getAvcc,

@@ -1,6 +1,6 @@
 package at.qualisign.domain
 
-case class PakkageMetrics(
+case class PakkageMetricsJHawk(
   pakkage: String,
   abstractness: Double,
   avcc: Double,

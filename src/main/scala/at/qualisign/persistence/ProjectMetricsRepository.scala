@@ -1,10 +1,10 @@
 package at.qualisign.persistence
 
-import at.qualisign.domain.ProjectMetrics
+import at.qualisign.domain.ProjectMetricsJHawk
 
 import scala.concurrent.Future
 
 trait ProjectMetricsRepository {
-  def save(metrics: ProjectMetrics): Future[Unit]
-  def saveAll(metrics: Seq[ProjectMetrics]): Future[Unit]
+  def save(metrics: ProjectMetricsJHawk): Future[Unit]
+  def saveAll(metrics: Seq[ProjectMetricsJHawk]): Future[Unit]
 }

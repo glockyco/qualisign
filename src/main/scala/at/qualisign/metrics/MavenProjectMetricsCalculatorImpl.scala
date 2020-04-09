@@ -4,25 +4,36 @@ import java.io.File
 
 import at.qualisign.domain.Project
 import at.qualisign.domain.extensions.ProjectExtensions._
+import at.qualisign.metrics.ckjm.CkjmMetricsCalculator
 import at.qualisign.metrics.exceptions.MetricsCalculationException
 import at.qualisign.metrics.jhawk.JHawkMetricsCalculator
 
-class MavenProjectMetricsCalculatorImpl(calculator: JHawkMetricsCalculator)
-  extends MavenProjectMetricsCalculator {
+class MavenProjectMetricsCalculatorImpl(
+  ckjmCalculator: CkjmMetricsCalculator,
+  jHawkCalculator: JHawkMetricsCalculator,
+) extends MavenProjectMetricsCalculator {
 
   override def calculateProjectMetrics(project: Project): Unit = {
     try {
       project.metricsDirectory.mkdirs()
 
-      calculateMetrics(project)
+      calculateCkjmMetrics(project)
+      calculateJHawkMetrics(project)
     } catch {
       case exception: Exception => throw new MetricsCalculationException(exception)
     }
   }
 
-  private def calculateMetrics(project: Project): Unit = {
+  private def calculateCkjmMetrics(project: Project): Unit = {
+    val from: File = project.binariesJarFile
+    val to: File = project.ckjmMetricsFile
+    val error: File = project.ckjmErrorFile
+    ckjmCalculator.calculateMetrics(from, to, error)
+  }
+
+  private def calculateJHawkMetrics(project: Project): Unit = {
     val from: File = project.sourcesDirectory
-    val to: File = project.metricsFile
-    calculator.calculateMetrics(from, to)
+    val to: File = project.jHawkMetricsFile
+    jHawkCalculator.calculateMetrics(from, to)
   }
 }

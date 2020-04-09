@@ -7,6 +7,7 @@ import at.qualisign.downloading._
 import at.qualisign.indexing._
 import at.qualisign.languages._
 import at.qualisign.metrics._
+import at.qualisign.metrics.ckjm._
 import at.qualisign.metrics.jhawk._
 import at.qualisign.patterns._
 import at.qualisign.persistence.ProjectRepository
@@ -62,12 +63,15 @@ object Application extends App {
 
   // --- Metrics Calculation ---
 
+  val ckjmCalculator: CkjmMetricsCalculator = new CkjmMetricsCalculatorImpl(executor)
   val jHawkCalculator: JHawkMetricsCalculator = new JHawkMetricsCalculatorImpl(executor)
-  val metricsCalculator: MavenProjectMetricsCalculator = new MavenProjectMetricsCalculatorImpl(jHawkCalculator)
+  val metricsCalculator: MavenProjectMetricsCalculator = new MavenProjectMetricsCalculatorImpl(ckjmCalculator, jHawkCalculator)
 
+  val ckjmReader: CkjmMetricsReader = new CkjmMetricsReaderImpl
+  val ckjmPersistence: CkjmMetricsPersistence = new CkjmMetricsPersistenceImpl(database)
   val jHawkReader: JHawkMetricsReader = new JHawkMetricsReaderImpl
   val jHawkPersistence: JHawkMetricsPersistence = new JHawkMetricsPersistenceImpl(database)
-  val metricsPersistence: MavenProjectMetricsPersistence = new MavenProjectMetricsPersistenceImpl(jHawkReader, jHawkPersistence)
+  val metricsPersistence: MavenProjectMetricsPersistence = new MavenProjectMetricsPersistenceImpl(ckjmReader, ckjmPersistence, jHawkReader, jHawkPersistence)
 
   // --- Design Pattern Detection ---
 

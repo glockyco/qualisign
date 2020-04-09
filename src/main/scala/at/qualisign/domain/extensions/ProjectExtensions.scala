@@ -48,8 +48,16 @@ object ProjectExtensions {
       new File(rootDirectory, "metrics")
     }
 
-    def metricsFile: File = {
+    def jHawkMetricsFile: File = {
       new File(metricsDirectory, "jhawk.xml")
+    }
+
+    def ckjmMetricsFile: File = {
+      new File(metricsDirectory, "ckjm.xml")
+    }
+
+    def ckjmErrorFile: File = {
+      new File(metricsDirectory, "ckjm.errors.txt")
     }
 
     def patternsDirectory: File = {

@@ -1,6 +1,6 @@
 package at.qualisign.domain
 
-case class ProjectMetrics(
+case class ProjectMetricsJHawk(
   project: String,
   tl: Int,
   bl: Int,

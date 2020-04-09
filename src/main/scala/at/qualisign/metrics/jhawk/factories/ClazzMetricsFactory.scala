@@ -1,11 +1,11 @@
 package at.qualisign.metrics.jhawk.factories
 
-import at.qualisign.domain.{Clazz, ClazzMetrics}
+import at.qualisign.domain.{Clazz, ClazzMetricsJHawk}
 import at.qualisign.metrics.jhawk.jaxb.ClassMetricsType
 
 object ClazzMetricsFactory {
-  def create(clazz: Clazz, classMetricsType: ClassMetricsType): ClazzMetrics = {
-    ClazzMetrics(
+  def create(clazz: Clazz, classMetricsType: ClassMetricsType): ClazzMetricsJHawk = {
+    ClazzMetricsJHawk(
       clazz.name,
       classMetricsType.getAvcc,
       classMetricsType.getCbo.intValue,

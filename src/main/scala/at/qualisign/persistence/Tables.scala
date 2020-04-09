@@ -16,7 +16,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Clazzes.schema, ClazzMetrics.schema, MethodMetrics.schema, Methods.schema, PakkageMetrics.schema, Pakkages.schema, PatternInstances.schema, PatternRoles.schema, ProjectLanguages.schema, ProjectMetrics.schema, Projects.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Clazzes.schema, ClazzMetricsCkjm.schema, ClazzMetricsJhawk.schema, MethodMetricsCkjm.schema, MethodMetricsJhawk.schema, Methods.schema, PakkageMetricsJhawk.schema, Pakkages.schema, PatternInstances.schema, PatternRoles.schema, ProjectLanguages.schema, ProjectMetricsJhawk.schema, Projects.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -46,7 +46,84 @@ trait Tables {
   /** Collection-like TableQuery object for table Clazzes */
   lazy val Clazzes = new TableQuery(tag => new Clazzes(tag))
 
-  /** Entity class storing rows of table ClazzMetrics
+  /** Entity class storing rows of table ClazzMetricsCkjm
+   *  @param clazz Database column clazz SqlType(varchar), PrimaryKey
+   *  @param amc Database column amc SqlType(float8)
+   *  @param ca Database column ca SqlType(int4)
+   *  @param cam Database column cam SqlType(float8)
+   *  @param cbm Database column cbm SqlType(int4)
+   *  @param cbo Database column cbo SqlType(int4)
+   *  @param ce Database column ce SqlType(int4)
+   *  @param dam Database column dam SqlType(float8)
+   *  @param dit Database column dit SqlType(int4)
+   *  @param ic Database column ic SqlType(int4)
+   *  @param lcom Database column lcom SqlType(int4)
+   *  @param lcom3 Database column lcom3 SqlType(float8)
+   *  @param loc Database column loc SqlType(int4)
+   *  @param mfa Database column mfa SqlType(float8)
+   *  @param moa Database column moa SqlType(int4)
+   *  @param noc Database column noc SqlType(int4)
+   *  @param npm Database column npm SqlType(int4)
+   *  @param rfc Database column rfc SqlType(int4)
+   *  @param wmc Database column wmc SqlType(int4) */
+  case class ClazzMetricsCkjmRow(clazz: String, amc: Double, ca: Int, cam: Double, cbm: Int, cbo: Int, ce: Int, dam: Double, dit: Int, ic: Int, lcom: Int, lcom3: Double, loc: Int, mfa: Double, moa: Int, noc: Int, npm: Int, rfc: Int, wmc: Int)
+  /** GetResult implicit for fetching ClazzMetricsCkjmRow objects using plain SQL queries */
+  implicit def GetResultClazzMetricsCkjmRow(implicit e0: GR[String], e1: GR[Double], e2: GR[Int]): GR[ClazzMetricsCkjmRow] = GR{
+    prs => import prs._
+    ClazzMetricsCkjmRow.tupled((<<[String], <<[Double], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Double], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
+  }
+  /** Table description of table clazz_metrics_ckjm. Objects of this class serve as prototypes for rows in queries. */
+  class ClazzMetricsCkjm(_tableTag: Tag) extends profile.api.Table[ClazzMetricsCkjmRow](_tableTag, "clazz_metrics_ckjm") {
+    def * = (clazz, amc, ca, cam, cbm, cbo, ce, dam, dit, ic, lcom, lcom3, loc, mfa, moa, noc, npm, rfc, wmc) <> (ClazzMetricsCkjmRow.tupled, ClazzMetricsCkjmRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(clazz), Rep.Some(amc), Rep.Some(ca), Rep.Some(cam), Rep.Some(cbm), Rep.Some(cbo), Rep.Some(ce), Rep.Some(dam), Rep.Some(dit), Rep.Some(ic), Rep.Some(lcom), Rep.Some(lcom3), Rep.Some(loc), Rep.Some(mfa), Rep.Some(moa), Rep.Some(noc), Rep.Some(npm), Rep.Some(rfc), Rep.Some(wmc))).shaped.<>({r=>import r._; _1.map(_=> ClazzMetricsCkjmRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column clazz SqlType(varchar), PrimaryKey */
+    val clazz: Rep[String] = column[String]("clazz", O.PrimaryKey)
+    /** Database column amc SqlType(float8) */
+    val amc: Rep[Double] = column[Double]("amc")
+    /** Database column ca SqlType(int4) */
+    val ca: Rep[Int] = column[Int]("ca")
+    /** Database column cam SqlType(float8) */
+    val cam: Rep[Double] = column[Double]("cam")
+    /** Database column cbm SqlType(int4) */
+    val cbm: Rep[Int] = column[Int]("cbm")
+    /** Database column cbo SqlType(int4) */
+    val cbo: Rep[Int] = column[Int]("cbo")
+    /** Database column ce SqlType(int4) */
+    val ce: Rep[Int] = column[Int]("ce")
+    /** Database column dam SqlType(float8) */
+    val dam: Rep[Double] = column[Double]("dam")
+    /** Database column dit SqlType(int4) */
+    val dit: Rep[Int] = column[Int]("dit")
+    /** Database column ic SqlType(int4) */
+    val ic: Rep[Int] = column[Int]("ic")
+    /** Database column lcom SqlType(int4) */
+    val lcom: Rep[Int] = column[Int]("lcom")
+    /** Database column lcom3 SqlType(float8) */
+    val lcom3: Rep[Double] = column[Double]("lcom3")
+    /** Database column loc SqlType(int4) */
+    val loc: Rep[Int] = column[Int]("loc")
+    /** Database column mfa SqlType(float8) */
+    val mfa: Rep[Double] = column[Double]("mfa")
+    /** Database column moa SqlType(int4) */
+    val moa: Rep[Int] = column[Int]("moa")
+    /** Database column noc SqlType(int4) */
+    val noc: Rep[Int] = column[Int]("noc")
+    /** Database column npm SqlType(int4) */
+    val npm: Rep[Int] = column[Int]("npm")
+    /** Database column rfc SqlType(int4) */
+    val rfc: Rep[Int] = column[Int]("rfc")
+    /** Database column wmc SqlType(int4) */
+    val wmc: Rep[Int] = column[Int]("wmc")
+
+    /** Foreign key referencing Clazzes (database name clazz_metrics_ckjm_clazz_fkey) */
+    lazy val clazzesFk = foreignKey("clazz_metrics_ckjm_clazz_fkey", clazz, Clazzes)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
+  }
+  /** Collection-like TableQuery object for table ClazzMetricsCkjm */
+  lazy val ClazzMetricsCkjm = new TableQuery(tag => new ClazzMetricsCkjm(tag))
+
+  /** Entity class storing rows of table ClazzMetricsJhawk
    *  @param clazz Database column clazz SqlType(varchar), PrimaryKey
    *  @param avcc Database column avcc SqlType(float8)
    *  @param cbo Database column cbo SqlType(int4)
@@ -80,17 +157,17 @@ trait Tables {
    *  @param specializationRation Database column specialization_ration SqlType(float8)
    *  @param tcc Database column tcc SqlType(int4)
    *  @param unweightedClassSize Database column unweighted_class_size SqlType(int4) */
-  case class ClazzMetricsRow(clazz: String, avcc: Double, cbo: Int, coh: Double, cumulativeNumberOfCommentLines: Int, cumulativeNumberOfComments: Int, dit: Int, fanIn: Int, fanOut: Int, halsteadCumulativeBugs: Double, halsteadCumulativeLength: Int, halsteadCumulativeVolume: Double, halsteadEffort: Double, lcom: Double, lcom2: Double, loc: Int, maintainabilityIndex: Double, maintainabilityIndexNc: Double, maxcc: Int, messagePassingCoupling: Int, numberOfCommands: Int, numberOfMethods: Int, numberOfQueries: Int, numberOfStatements: Int, numberOfSubClasses: Int, numberOfSuperClasses: Int, responseForClass: Int, reuseRation: Double, revf: Double, six: Double, specializationRation: Double, tcc: Int, unweightedClassSize: Int)
-  /** GetResult implicit for fetching ClazzMetricsRow objects using plain SQL queries */
-  implicit def GetResultClazzMetricsRow(implicit e0: GR[String], e1: GR[Double], e2: GR[Int]): GR[ClazzMetricsRow] = GR{
+  case class ClazzMetricsJhawkRow(clazz: String, avcc: Double, cbo: Int, coh: Double, cumulativeNumberOfCommentLines: Int, cumulativeNumberOfComments: Int, dit: Int, fanIn: Int, fanOut: Int, halsteadCumulativeBugs: Double, halsteadCumulativeLength: Int, halsteadCumulativeVolume: Double, halsteadEffort: Double, lcom: Double, lcom2: Double, loc: Int, maintainabilityIndex: Double, maintainabilityIndexNc: Double, maxcc: Int, messagePassingCoupling: Int, numberOfCommands: Int, numberOfMethods: Int, numberOfQueries: Int, numberOfStatements: Int, numberOfSubClasses: Int, numberOfSuperClasses: Int, responseForClass: Int, reuseRation: Double, revf: Double, six: Double, specializationRation: Double, tcc: Int, unweightedClassSize: Int)
+  /** GetResult implicit for fetching ClazzMetricsJhawkRow objects using plain SQL queries */
+  implicit def GetResultClazzMetricsJhawkRow(implicit e0: GR[String], e1: GR[Double], e2: GR[Int]): GR[ClazzMetricsJhawkRow] = GR{
     prs => import prs._
-    ClazzMetricsRow(<<[String], <<[Double], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<[Double], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<[Int])
+    ClazzMetricsJhawkRow(<<[String], <<[Double], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<[Double], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<[Int])
   }
-  /** Table description of table clazz_metrics. Objects of this class serve as prototypes for rows in queries. */
-  class ClazzMetrics(_tableTag: Tag) extends profile.api.Table[ClazzMetricsRow](_tableTag, "clazz_metrics") {
-    def * = (clazz :: avcc :: cbo :: coh :: cumulativeNumberOfCommentLines :: cumulativeNumberOfComments :: dit :: fanIn :: fanOut :: halsteadCumulativeBugs :: halsteadCumulativeLength :: halsteadCumulativeVolume :: halsteadEffort :: lcom :: lcom2 :: loc :: maintainabilityIndex :: maintainabilityIndexNc :: maxcc :: messagePassingCoupling :: numberOfCommands :: numberOfMethods :: numberOfQueries :: numberOfStatements :: numberOfSubClasses :: numberOfSuperClasses :: responseForClass :: reuseRation :: revf :: six :: specializationRation :: tcc :: unweightedClassSize :: HNil).mapTo[ClazzMetricsRow]
+  /** Table description of table clazz_metrics_jhawk. Objects of this class serve as prototypes for rows in queries. */
+  class ClazzMetricsJhawk(_tableTag: Tag) extends profile.api.Table[ClazzMetricsJhawkRow](_tableTag, "clazz_metrics_jhawk") {
+    def * = (clazz :: avcc :: cbo :: coh :: cumulativeNumberOfCommentLines :: cumulativeNumberOfComments :: dit :: fanIn :: fanOut :: halsteadCumulativeBugs :: halsteadCumulativeLength :: halsteadCumulativeVolume :: halsteadEffort :: lcom :: lcom2 :: loc :: maintainabilityIndex :: maintainabilityIndexNc :: maxcc :: messagePassingCoupling :: numberOfCommands :: numberOfMethods :: numberOfQueries :: numberOfStatements :: numberOfSubClasses :: numberOfSuperClasses :: responseForClass :: reuseRation :: revf :: six :: specializationRation :: tcc :: unweightedClassSize :: HNil).mapTo[ClazzMetricsJhawkRow]
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(clazz) :: Rep.Some(avcc) :: Rep.Some(cbo) :: Rep.Some(coh) :: Rep.Some(cumulativeNumberOfCommentLines) :: Rep.Some(cumulativeNumberOfComments) :: Rep.Some(dit) :: Rep.Some(fanIn) :: Rep.Some(fanOut) :: Rep.Some(halsteadCumulativeBugs) :: Rep.Some(halsteadCumulativeLength) :: Rep.Some(halsteadCumulativeVolume) :: Rep.Some(halsteadEffort) :: Rep.Some(lcom) :: Rep.Some(lcom2) :: Rep.Some(loc) :: Rep.Some(maintainabilityIndex) :: Rep.Some(maintainabilityIndexNc) :: Rep.Some(maxcc) :: Rep.Some(messagePassingCoupling) :: Rep.Some(numberOfCommands) :: Rep.Some(numberOfMethods) :: Rep.Some(numberOfQueries) :: Rep.Some(numberOfStatements) :: Rep.Some(numberOfSubClasses) :: Rep.Some(numberOfSuperClasses) :: Rep.Some(responseForClass) :: Rep.Some(reuseRation) :: Rep.Some(revf) :: Rep.Some(six) :: Rep.Some(specializationRation) :: Rep.Some(tcc) :: Rep.Some(unweightedClassSize) :: HNil).shaped.<>(r => ClazzMetricsRow(r(0).asInstanceOf[Option[String]].get, r(1).asInstanceOf[Option[Double]].get, r(2).asInstanceOf[Option[Int]].get, r(3).asInstanceOf[Option[Double]].get, r(4).asInstanceOf[Option[Int]].get, r(5).asInstanceOf[Option[Int]].get, r(6).asInstanceOf[Option[Int]].get, r(7).asInstanceOf[Option[Int]].get, r(8).asInstanceOf[Option[Int]].get, r(9).asInstanceOf[Option[Double]].get, r(10).asInstanceOf[Option[Int]].get, r(11).asInstanceOf[Option[Double]].get, r(12).asInstanceOf[Option[Double]].get, r(13).asInstanceOf[Option[Double]].get, r(14).asInstanceOf[Option[Double]].get, r(15).asInstanceOf[Option[Int]].get, r(16).asInstanceOf[Option[Double]].get, r(17).asInstanceOf[Option[Double]].get, r(18).asInstanceOf[Option[Int]].get, r(19).asInstanceOf[Option[Int]].get, r(20).asInstanceOf[Option[Int]].get, r(21).asInstanceOf[Option[Int]].get, r(22).asInstanceOf[Option[Int]].get, r(23).asInstanceOf[Option[Int]].get, r(24).asInstanceOf[Option[Int]].get, r(25).asInstanceOf[Option[Int]].get, r(26).asInstanceOf[Option[Int]].get, r(27).asInstanceOf[Option[Double]].get, r(28).asInstanceOf[Option[Double]].get, r(29).asInstanceOf[Option[Double]].get, r(30).asInstanceOf[Option[Double]].get, r(31).asInstanceOf[Option[Int]].get, r(32).asInstanceOf[Option[Int]].get), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(clazz) :: Rep.Some(avcc) :: Rep.Some(cbo) :: Rep.Some(coh) :: Rep.Some(cumulativeNumberOfCommentLines) :: Rep.Some(cumulativeNumberOfComments) :: Rep.Some(dit) :: Rep.Some(fanIn) :: Rep.Some(fanOut) :: Rep.Some(halsteadCumulativeBugs) :: Rep.Some(halsteadCumulativeLength) :: Rep.Some(halsteadCumulativeVolume) :: Rep.Some(halsteadEffort) :: Rep.Some(lcom) :: Rep.Some(lcom2) :: Rep.Some(loc) :: Rep.Some(maintainabilityIndex) :: Rep.Some(maintainabilityIndexNc) :: Rep.Some(maxcc) :: Rep.Some(messagePassingCoupling) :: Rep.Some(numberOfCommands) :: Rep.Some(numberOfMethods) :: Rep.Some(numberOfQueries) :: Rep.Some(numberOfStatements) :: Rep.Some(numberOfSubClasses) :: Rep.Some(numberOfSuperClasses) :: Rep.Some(responseForClass) :: Rep.Some(reuseRation) :: Rep.Some(revf) :: Rep.Some(six) :: Rep.Some(specializationRation) :: Rep.Some(tcc) :: Rep.Some(unweightedClassSize) :: HNil).shaped.<>(r => ClazzMetricsJhawkRow(r(0).asInstanceOf[Option[String]].get, r(1).asInstanceOf[Option[Double]].get, r(2).asInstanceOf[Option[Int]].get, r(3).asInstanceOf[Option[Double]].get, r(4).asInstanceOf[Option[Int]].get, r(5).asInstanceOf[Option[Int]].get, r(6).asInstanceOf[Option[Int]].get, r(7).asInstanceOf[Option[Int]].get, r(8).asInstanceOf[Option[Int]].get, r(9).asInstanceOf[Option[Double]].get, r(10).asInstanceOf[Option[Int]].get, r(11).asInstanceOf[Option[Double]].get, r(12).asInstanceOf[Option[Double]].get, r(13).asInstanceOf[Option[Double]].get, r(14).asInstanceOf[Option[Double]].get, r(15).asInstanceOf[Option[Int]].get, r(16).asInstanceOf[Option[Double]].get, r(17).asInstanceOf[Option[Double]].get, r(18).asInstanceOf[Option[Int]].get, r(19).asInstanceOf[Option[Int]].get, r(20).asInstanceOf[Option[Int]].get, r(21).asInstanceOf[Option[Int]].get, r(22).asInstanceOf[Option[Int]].get, r(23).asInstanceOf[Option[Int]].get, r(24).asInstanceOf[Option[Int]].get, r(25).asInstanceOf[Option[Int]].get, r(26).asInstanceOf[Option[Int]].get, r(27).asInstanceOf[Option[Double]].get, r(28).asInstanceOf[Option[Double]].get, r(29).asInstanceOf[Option[Double]].get, r(30).asInstanceOf[Option[Double]].get, r(31).asInstanceOf[Option[Int]].get, r(32).asInstanceOf[Option[Int]].get), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column clazz SqlType(varchar), PrimaryKey */
     val clazz: Rep[String] = column[String]("clazz", O.PrimaryKey)
@@ -162,10 +239,36 @@ trait Tables {
     /** Foreign key referencing Clazzes (database name clazz_metrics_clazz_fkey) */
     lazy val clazzesFk = foreignKey("clazz_metrics_clazz_fkey", clazz :: HNil, Clazzes)(r => r.name :: HNil, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
   }
-  /** Collection-like TableQuery object for table ClazzMetrics */
-  lazy val ClazzMetrics = new TableQuery(tag => new ClazzMetrics(tag))
+  /** Collection-like TableQuery object for table ClazzMetricsJhawk */
+  lazy val ClazzMetricsJhawk = new TableQuery(tag => new ClazzMetricsJhawk(tag))
 
-  /** Entity class storing rows of table MethodMetrics
+  /** Entity class storing rows of table MethodMetricsCkjm
+   *  @param method Database column method SqlType(varchar), PrimaryKey
+   *  @param cc Database column cc SqlType(int4) */
+  case class MethodMetricsCkjmRow(method: String, cc: Int)
+  /** GetResult implicit for fetching MethodMetricsCkjmRow objects using plain SQL queries */
+  implicit def GetResultMethodMetricsCkjmRow(implicit e0: GR[String], e1: GR[Int]): GR[MethodMetricsCkjmRow] = GR{
+    prs => import prs._
+    MethodMetricsCkjmRow.tupled((<<[String], <<[Int]))
+  }
+  /** Table description of table method_metrics_ckjm. Objects of this class serve as prototypes for rows in queries. */
+  class MethodMetricsCkjm(_tableTag: Tag) extends profile.api.Table[MethodMetricsCkjmRow](_tableTag, "method_metrics_ckjm") {
+    def * = (method, cc) <> (MethodMetricsCkjmRow.tupled, MethodMetricsCkjmRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(method), Rep.Some(cc))).shaped.<>({r=>import r._; _1.map(_=> MethodMetricsCkjmRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column method SqlType(varchar), PrimaryKey */
+    val method: Rep[String] = column[String]("method", O.PrimaryKey)
+    /** Database column cc SqlType(int4) */
+    val cc: Rep[Int] = column[Int]("cc")
+
+    /** Foreign key referencing Methods (database name method_metrics_ckjm_method_fkey) */
+    lazy val methodsFk = foreignKey("method_metrics_ckjm_method_fkey", method, Methods)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
+  }
+  /** Collection-like TableQuery object for table MethodMetricsCkjm */
+  lazy val MethodMetricsCkjm = new TableQuery(tag => new MethodMetricsCkjm(tag))
+
+  /** Entity class storing rows of table MethodMetricsJhawk
    *  @param method Database column method SqlType(varchar), PrimaryKey
    *  @param cyclomaticComplexity Database column cyclomatic_complexity SqlType(int4)
    *  @param halsteadBugs Database column halstead_bugs SqlType(float8)
@@ -188,17 +291,17 @@ trait Tables {
    *  @param numberOfVariableDeclarations Database column number_of_variable_declarations SqlType(int4)
    *  @param numberOfVariableReferences Database column number_of_variable_references SqlType(int4)
    *  @param totalNesting Database column total_nesting SqlType(int4) */
-  case class MethodMetricsRow(method: String, cyclomaticComplexity: Int, halsteadBugs: Double, halsteadDifficulty: Double, halsteadEffort: Double, halsteadLength: Int, halsteadVocabulary: Int, halsteadVolume: Double, loc: Int, maxDepthOfNesting: Int, numberOfArguments: Int, numberOfCasts: Int, numberOfCommentLines: Int, numberOfComments: Int, numberOfExpressions: Int, numberOfLoops: Int, numberOfOperands: Int, numberOfOperators: Int, numberOfStatements: Int, numberOfVariableDeclarations: Int, numberOfVariableReferences: Int, totalNesting: Int)
-  /** GetResult implicit for fetching MethodMetricsRow objects using plain SQL queries */
-  implicit def GetResultMethodMetricsRow(implicit e0: GR[String], e1: GR[Int], e2: GR[Double]): GR[MethodMetricsRow] = GR{
+  case class MethodMetricsJhawkRow(method: String, cyclomaticComplexity: Int, halsteadBugs: Double, halsteadDifficulty: Double, halsteadEffort: Double, halsteadLength: Int, halsteadVocabulary: Int, halsteadVolume: Double, loc: Int, maxDepthOfNesting: Int, numberOfArguments: Int, numberOfCasts: Int, numberOfCommentLines: Int, numberOfComments: Int, numberOfExpressions: Int, numberOfLoops: Int, numberOfOperands: Int, numberOfOperators: Int, numberOfStatements: Int, numberOfVariableDeclarations: Int, numberOfVariableReferences: Int, totalNesting: Int)
+  /** GetResult implicit for fetching MethodMetricsJhawkRow objects using plain SQL queries */
+  implicit def GetResultMethodMetricsJhawkRow(implicit e0: GR[String], e1: GR[Int], e2: GR[Double]): GR[MethodMetricsJhawkRow] = GR{
     prs => import prs._
-    MethodMetricsRow.tupled((<<[String], <<[Int], <<[Double], <<[Double], <<[Double], <<[Int], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
+    MethodMetricsJhawkRow.tupled((<<[String], <<[Int], <<[Double], <<[Double], <<[Double], <<[Int], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
   }
-  /** Table description of table method_metrics. Objects of this class serve as prototypes for rows in queries. */
-  class MethodMetrics(_tableTag: Tag) extends profile.api.Table[MethodMetricsRow](_tableTag, "method_metrics") {
-    def * = (method, cyclomaticComplexity, halsteadBugs, halsteadDifficulty, halsteadEffort, halsteadLength, halsteadVocabulary, halsteadVolume, loc, maxDepthOfNesting, numberOfArguments, numberOfCasts, numberOfCommentLines, numberOfComments, numberOfExpressions, numberOfLoops, numberOfOperands, numberOfOperators, numberOfStatements, numberOfVariableDeclarations, numberOfVariableReferences, totalNesting) <> (MethodMetricsRow.tupled, MethodMetricsRow.unapply)
+  /** Table description of table method_metrics_jhawk. Objects of this class serve as prototypes for rows in queries. */
+  class MethodMetricsJhawk(_tableTag: Tag) extends profile.api.Table[MethodMetricsJhawkRow](_tableTag, "method_metrics_jhawk") {
+    def * = (method, cyclomaticComplexity, halsteadBugs, halsteadDifficulty, halsteadEffort, halsteadLength, halsteadVocabulary, halsteadVolume, loc, maxDepthOfNesting, numberOfArguments, numberOfCasts, numberOfCommentLines, numberOfComments, numberOfExpressions, numberOfLoops, numberOfOperands, numberOfOperators, numberOfStatements, numberOfVariableDeclarations, numberOfVariableReferences, totalNesting) <> (MethodMetricsJhawkRow.tupled, MethodMetricsJhawkRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(method), Rep.Some(cyclomaticComplexity), Rep.Some(halsteadBugs), Rep.Some(halsteadDifficulty), Rep.Some(halsteadEffort), Rep.Some(halsteadLength), Rep.Some(halsteadVocabulary), Rep.Some(halsteadVolume), Rep.Some(loc), Rep.Some(maxDepthOfNesting), Rep.Some(numberOfArguments), Rep.Some(numberOfCasts), Rep.Some(numberOfCommentLines), Rep.Some(numberOfComments), Rep.Some(numberOfExpressions), Rep.Some(numberOfLoops), Rep.Some(numberOfOperands), Rep.Some(numberOfOperators), Rep.Some(numberOfStatements), Rep.Some(numberOfVariableDeclarations), Rep.Some(numberOfVariableReferences), Rep.Some(totalNesting))).shaped.<>({r=>import r._; _1.map(_=> MethodMetricsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19.get, _20.get, _21.get, _22.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(method), Rep.Some(cyclomaticComplexity), Rep.Some(halsteadBugs), Rep.Some(halsteadDifficulty), Rep.Some(halsteadEffort), Rep.Some(halsteadLength), Rep.Some(halsteadVocabulary), Rep.Some(halsteadVolume), Rep.Some(loc), Rep.Some(maxDepthOfNesting), Rep.Some(numberOfArguments), Rep.Some(numberOfCasts), Rep.Some(numberOfCommentLines), Rep.Some(numberOfComments), Rep.Some(numberOfExpressions), Rep.Some(numberOfLoops), Rep.Some(numberOfOperands), Rep.Some(numberOfOperators), Rep.Some(numberOfStatements), Rep.Some(numberOfVariableDeclarations), Rep.Some(numberOfVariableReferences), Rep.Some(totalNesting))).shaped.<>({r=>import r._; _1.map(_=> MethodMetricsJhawkRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19.get, _20.get, _21.get, _22.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column method SqlType(varchar), PrimaryKey */
     val method: Rep[String] = column[String]("method", O.PrimaryKey)
@@ -248,8 +351,8 @@ trait Tables {
     /** Foreign key referencing Methods (database name method_metrics_method_fkey) */
     lazy val methodsFk = foreignKey("method_metrics_method_fkey", method, Methods)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
   }
-  /** Collection-like TableQuery object for table MethodMetrics */
-  lazy val MethodMetrics = new TableQuery(tag => new MethodMetrics(tag))
+  /** Collection-like TableQuery object for table MethodMetricsJhawk */
+  lazy val MethodMetricsJhawk = new TableQuery(tag => new MethodMetricsJhawk(tag))
 
   /** Entity class storing rows of table Methods
    *  @param clazz Database column clazz SqlType(varchar)
@@ -277,7 +380,7 @@ trait Tables {
   /** Collection-like TableQuery object for table Methods */
   lazy val Methods = new TableQuery(tag => new Methods(tag))
 
-  /** Entity class storing rows of table PakkageMetrics
+  /** Entity class storing rows of table PakkageMetricsJhawk
    *  @param pakkage Database column pakkage SqlType(varchar), PrimaryKey
    *  @param abstractness Database column abstractness SqlType(float8)
    *  @param avcc Database column avcc SqlType(float8)
@@ -300,17 +403,17 @@ trait Tables {
    *  @param numberOfStatements Database column number_of_statements SqlType(int4)
    *  @param rvf Database column rvf SqlType(int4)
    *  @param tcc Database column tcc SqlType(int4) */
-  case class PakkageMetricsRow(pakkage: String, abstractness: Double, avcc: Double, cumulativeNumberOfCommentLines: Int, cumulativeNumberOfComments: Int, distance: Double, fanin: Int, fanout: Int, halsteadCumulativeBugs: Double, halsteadCumulativeLength: Int, halsteadCumulativeVolume: Double, halsteadEffort: Double, instability: Double, loc: Int, maintainabilityIndex: Double, maintainabilityIndexNc: Double, maxcc: Int, numberOfClasses: Int, numberOfMethods: Int, numberOfStatements: Int, rvf: Int, tcc: Int)
-  /** GetResult implicit for fetching PakkageMetricsRow objects using plain SQL queries */
-  implicit def GetResultPakkageMetricsRow(implicit e0: GR[String], e1: GR[Double], e2: GR[Int]): GR[PakkageMetricsRow] = GR{
+  case class PakkageMetricsJhawkRow(pakkage: String, abstractness: Double, avcc: Double, cumulativeNumberOfCommentLines: Int, cumulativeNumberOfComments: Int, distance: Double, fanin: Int, fanout: Int, halsteadCumulativeBugs: Double, halsteadCumulativeLength: Int, halsteadCumulativeVolume: Double, halsteadEffort: Double, instability: Double, loc: Int, maintainabilityIndex: Double, maintainabilityIndexNc: Double, maxcc: Int, numberOfClasses: Int, numberOfMethods: Int, numberOfStatements: Int, rvf: Int, tcc: Int)
+  /** GetResult implicit for fetching PakkageMetricsJhawkRow objects using plain SQL queries */
+  implicit def GetResultPakkageMetricsJhawkRow(implicit e0: GR[String], e1: GR[Double], e2: GR[Int]): GR[PakkageMetricsJhawkRow] = GR{
     prs => import prs._
-    PakkageMetricsRow.tupled((<<[String], <<[Double], <<[Double], <<[Int], <<[Int], <<[Double], <<[Int], <<[Int], <<[Double], <<[Int], <<[Double], <<[Double], <<[Double], <<[Int], <<[Double], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
+    PakkageMetricsJhawkRow.tupled((<<[String], <<[Double], <<[Double], <<[Int], <<[Int], <<[Double], <<[Int], <<[Int], <<[Double], <<[Int], <<[Double], <<[Double], <<[Double], <<[Int], <<[Double], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
   }
-  /** Table description of table pakkage_metrics. Objects of this class serve as prototypes for rows in queries. */
-  class PakkageMetrics(_tableTag: Tag) extends profile.api.Table[PakkageMetricsRow](_tableTag, "pakkage_metrics") {
-    def * = (pakkage, abstractness, avcc, cumulativeNumberOfCommentLines, cumulativeNumberOfComments, distance, fanin, fanout, halsteadCumulativeBugs, halsteadCumulativeLength, halsteadCumulativeVolume, halsteadEffort, instability, loc, maintainabilityIndex, maintainabilityIndexNc, maxcc, numberOfClasses, numberOfMethods, numberOfStatements, rvf, tcc) <> (PakkageMetricsRow.tupled, PakkageMetricsRow.unapply)
+  /** Table description of table pakkage_metrics_jhawk. Objects of this class serve as prototypes for rows in queries. */
+  class PakkageMetricsJhawk(_tableTag: Tag) extends profile.api.Table[PakkageMetricsJhawkRow](_tableTag, "pakkage_metrics_jhawk") {
+    def * = (pakkage, abstractness, avcc, cumulativeNumberOfCommentLines, cumulativeNumberOfComments, distance, fanin, fanout, halsteadCumulativeBugs, halsteadCumulativeLength, halsteadCumulativeVolume, halsteadEffort, instability, loc, maintainabilityIndex, maintainabilityIndexNc, maxcc, numberOfClasses, numberOfMethods, numberOfStatements, rvf, tcc) <> (PakkageMetricsJhawkRow.tupled, PakkageMetricsJhawkRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(pakkage), Rep.Some(abstractness), Rep.Some(avcc), Rep.Some(cumulativeNumberOfCommentLines), Rep.Some(cumulativeNumberOfComments), Rep.Some(distance), Rep.Some(fanin), Rep.Some(fanout), Rep.Some(halsteadCumulativeBugs), Rep.Some(halsteadCumulativeLength), Rep.Some(halsteadCumulativeVolume), Rep.Some(halsteadEffort), Rep.Some(instability), Rep.Some(loc), Rep.Some(maintainabilityIndex), Rep.Some(maintainabilityIndexNc), Rep.Some(maxcc), Rep.Some(numberOfClasses), Rep.Some(numberOfMethods), Rep.Some(numberOfStatements), Rep.Some(rvf), Rep.Some(tcc))).shaped.<>({r=>import r._; _1.map(_=> PakkageMetricsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19.get, _20.get, _21.get, _22.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(pakkage), Rep.Some(abstractness), Rep.Some(avcc), Rep.Some(cumulativeNumberOfCommentLines), Rep.Some(cumulativeNumberOfComments), Rep.Some(distance), Rep.Some(fanin), Rep.Some(fanout), Rep.Some(halsteadCumulativeBugs), Rep.Some(halsteadCumulativeLength), Rep.Some(halsteadCumulativeVolume), Rep.Some(halsteadEffort), Rep.Some(instability), Rep.Some(loc), Rep.Some(maintainabilityIndex), Rep.Some(maintainabilityIndexNc), Rep.Some(maxcc), Rep.Some(numberOfClasses), Rep.Some(numberOfMethods), Rep.Some(numberOfStatements), Rep.Some(rvf), Rep.Some(tcc))).shaped.<>({r=>import r._; _1.map(_=> PakkageMetricsJhawkRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19.get, _20.get, _21.get, _22.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column pakkage SqlType(varchar), PrimaryKey */
     val pakkage: Rep[String] = column[String]("pakkage", O.PrimaryKey)
@@ -360,8 +463,8 @@ trait Tables {
     /** Foreign key referencing Pakkages (database name pakkage_metrics_pakkage_fkey) */
     lazy val pakkagesFk = foreignKey("pakkage_metrics_pakkage_fkey", pakkage, Pakkages)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
   }
-  /** Collection-like TableQuery object for table PakkageMetrics */
-  lazy val PakkageMetrics = new TableQuery(tag => new PakkageMetrics(tag))
+  /** Collection-like TableQuery object for table PakkageMetricsJhawk */
+  lazy val PakkageMetricsJhawk = new TableQuery(tag => new PakkageMetricsJhawk(tag))
 
   /** Entity class storing rows of table Pakkages
    *  @param project Database column project SqlType(varchar)
@@ -482,23 +585,23 @@ trait Tables {
   /** Collection-like TableQuery object for table ProjectLanguages */
   lazy val ProjectLanguages = new TableQuery(tag => new ProjectLanguages(tag))
 
-  /** Entity class storing rows of table ProjectMetrics
+  /** Entity class storing rows of table ProjectMetricsJhawk
    *  @param project Database column project SqlType(varchar), PrimaryKey
    *  @param tl Database column tl SqlType(int4)
    *  @param bl Database column bl SqlType(int4)
    *  @param ci Database column ci SqlType(int4)
    *  @param co Database column co SqlType(int4) */
-  case class ProjectMetricsRow(project: String, tl: Int, bl: Int, ci: Int, co: Int)
-  /** GetResult implicit for fetching ProjectMetricsRow objects using plain SQL queries */
-  implicit def GetResultProjectMetricsRow(implicit e0: GR[String], e1: GR[Int]): GR[ProjectMetricsRow] = GR{
+  case class ProjectMetricsJhawkRow(project: String, tl: Int, bl: Int, ci: Int, co: Int)
+  /** GetResult implicit for fetching ProjectMetricsJhawkRow objects using plain SQL queries */
+  implicit def GetResultProjectMetricsJhawkRow(implicit e0: GR[String], e1: GR[Int]): GR[ProjectMetricsJhawkRow] = GR{
     prs => import prs._
-    ProjectMetricsRow.tupled((<<[String], <<[Int], <<[Int], <<[Int], <<[Int]))
+    ProjectMetricsJhawkRow.tupled((<<[String], <<[Int], <<[Int], <<[Int], <<[Int]))
   }
-  /** Table description of table project_metrics. Objects of this class serve as prototypes for rows in queries. */
-  class ProjectMetrics(_tableTag: Tag) extends profile.api.Table[ProjectMetricsRow](_tableTag, "project_metrics") {
-    def * = (project, tl, bl, ci, co) <> (ProjectMetricsRow.tupled, ProjectMetricsRow.unapply)
+  /** Table description of table project_metrics_jhawk. Objects of this class serve as prototypes for rows in queries. */
+  class ProjectMetricsJhawk(_tableTag: Tag) extends profile.api.Table[ProjectMetricsJhawkRow](_tableTag, "project_metrics_jhawk") {
+    def * = (project, tl, bl, ci, co) <> (ProjectMetricsJhawkRow.tupled, ProjectMetricsJhawkRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(project), Rep.Some(tl), Rep.Some(bl), Rep.Some(ci), Rep.Some(co))).shaped.<>({r=>import r._; _1.map(_=> ProjectMetricsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(project), Rep.Some(tl), Rep.Some(bl), Rep.Some(ci), Rep.Some(co))).shaped.<>({r=>import r._; _1.map(_=> ProjectMetricsJhawkRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column project SqlType(varchar), PrimaryKey */
     val project: Rep[String] = column[String]("project", O.PrimaryKey)
@@ -514,8 +617,8 @@ trait Tables {
     /** Foreign key referencing Projects (database name project_metrics_project_fkey) */
     lazy val projectsFk = foreignKey("project_metrics_project_fkey", project, Projects)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
   }
-  /** Collection-like TableQuery object for table ProjectMetrics */
-  lazy val ProjectMetrics = new TableQuery(tag => new ProjectMetrics(tag))
+  /** Collection-like TableQuery object for table ProjectMetricsJhawk */
+  lazy val ProjectMetricsJhawk = new TableQuery(tag => new ProjectMetricsJhawk(tag))
 
   /** Entity class storing rows of table Projects
    *  @param name Database column name SqlType(varchar), PrimaryKey

@@ -1,6 +1,6 @@
 package at.qualisign.domain
 
-case class ClazzMetrics(
+case class ClazzMetricsJHawk(
   clazz: String,
   avcc: Double,
   cbo: Int,

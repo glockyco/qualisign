@@ -14,9 +14,9 @@ object RowExtensions {
     }
   }
 
-  implicit class ClazzMetricsRowAsDomainExtension(row: Tables.ClazzMetricsRow) {
-    def asDomain: ClazzMetrics = {
-      ClazzMetrics(
+  implicit class ClazzMetricsRowAsDomainExtension(row: Tables.ClazzMetricsJhawkRow) {
+    def asDomain: ClazzMetricsJHawk = {
+      ClazzMetricsJHawk(
         row.clazz,
         row.avcc,
         row.cbo,
@@ -63,9 +63,9 @@ object RowExtensions {
     }
   }
 
-  implicit class MethodMetricsRowAsDomainExtension(row: Tables.MethodMetricsRow) {
-    def asDomain: MethodMetrics = {
-      MethodMetrics(
+  implicit class MethodMetricsRowAsDomainExtension(row: Tables.MethodMetricsJhawkRow) {
+    def asDomain: MethodMetricsJHawk = {
+      MethodMetricsJHawk(
         row.method,
         row.cyclomaticComplexity,
         row.halsteadBugs,
@@ -101,9 +101,9 @@ object RowExtensions {
     }
   }
 
-  implicit class PakkageMetricsRowAsDomainExtension(row: Tables.PakkageMetricsRow) {
-    def asDomain: PakkageMetrics = {
-      PakkageMetrics(
+  implicit class PakkageMetricsRowAsDomainExtension(row: Tables.PakkageMetricsJhawkRow) {
+    def asDomain: PakkageMetricsJHawk = {
+      PakkageMetricsJHawk(
         row.pakkage,
         row.abstractness,
         row.avcc,
@@ -153,9 +153,9 @@ object RowExtensions {
     }
   }
 
-  implicit class ProjectMetricsRowAsDomainExtension(row: Tables.ProjectMetricsRow) {
-    def asDomain: ProjectMetrics = {
-      ProjectMetrics(
+  implicit class ProjectMetricsRowAsDomainExtension(row: Tables.ProjectMetricsJhawkRow) {
+    def asDomain: ProjectMetricsJHawk = {
+      ProjectMetricsJHawk(
         row.project,
         row.tl,
         row.bl,

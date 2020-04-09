@@ -1,6 +1,6 @@
 package at.qualisign.domain
 
-case class MethodMetrics(
+case class MethodMetricsJHawk(
   method: String,
   cyclomaticComplexity: Int,
   halsteadBugs: Double,

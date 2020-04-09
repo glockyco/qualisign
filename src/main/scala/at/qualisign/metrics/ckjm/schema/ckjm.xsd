@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+    attributeFormDefault="unqualified"
+    elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+    <xs:element name="ckjm" type="ckjmType"/>
+
+    <xs:complexType name="ckjmType">
+        <xs:sequence>
+            <xs:element type="classType" name="class" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="classType">
+        <xs:sequence>
+            <xs:element type="xs:string" name="name"/>
+            <xs:element type="xs:nonNegativeInteger" name="wmc"/>
+            <xs:element type="xs:nonNegativeInteger" name="dit"/>
+            <xs:element type="xs:nonNegativeInteger" name="noc"/>
+            <xs:element type="xs:nonNegativeInteger" name="cbo"/>
+            <xs:element type="xs:nonNegativeInteger" name="rfc"/>
+            <xs:element type="xs:nonNegativeInteger" name="lcom"/>
+            <xs:element type="xs:nonNegativeInteger" name="ca"/>
+            <xs:element type="xs:nonNegativeInteger" name="ce"/>
+            <xs:element type="xs:nonNegativeInteger" name="npm"/>
+            <xs:element type="xs:float" name="lcom3"/>
+            <xs:element type="xs:nonNegativeInteger" name="loc"/>
+            <xs:element type="xs:float" name="dam"/>
+            <xs:element type="xs:nonNegativeInteger" name="moa"/>
+            <xs:element type="xs:float" name="mfa"/>
+            <xs:element type="xs:float" name="cam"/>
+            <xs:element type="xs:nonNegativeInteger" name="ic"/>
+            <xs:element type="xs:nonNegativeInteger" name="cbm"/>
+            <xs:element type="xs:float" name="amc"/>
+            <xs:element type="ccType" name="cc"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ccType" mixed="true">
+        <xs:sequence>
+            <xs:element type="methodType" name="method" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="methodType">
+        <xs:simpleContent>
+            <xs:extension base="xs:positiveInteger">
+                <xs:attribute type="xs:string" name="name" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+</xs:schema>
