@@ -1,14 +1,16 @@
 package at.qualisign.metrics.jhawk
 
-import java.io.File
+import java.io.{File, FileOutputStream}
 
 import at.qualisign.core.exec.CommandLineExecutor
 
 class JHawkMetricsCalculatorImpl(executor: CommandLineExecutor)
   extends JHawkMetricsCalculator {
 
-  override def calculateMetrics(from: File, to: File): Unit = {
-      executor.execute(command(from, to))
+  override def calculateMetrics(from: File, to: File, error: File): Unit = {
+    val err = new FileOutputStream(error)
+
+    executor.execute(command(from, to), err = err)
   }
 
   private def command(from: File, to: File): String = {

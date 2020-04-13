@@ -28,12 +28,15 @@ class MavenProjectMetricsCalculatorImpl(
     val from: File = project.binariesJarFile
     val to: File = project.ckjmMetricsFile
     val error: File = project.ckjmErrorFile
+
     ckjmCalculator.calculateMetrics(from, to, error)
   }
 
   private def calculateJHawkMetrics(project: Project): Unit = {
     val from: File = project.sourcesDirectory
     val to: File = project.jHawkMetricsFile
-    jHawkCalculator.calculateMetrics(from, to)
+    val error: File = project.jHawkErrorFile
+
+    jHawkCalculator.calculateMetrics(from, to, error)
   }
 }
