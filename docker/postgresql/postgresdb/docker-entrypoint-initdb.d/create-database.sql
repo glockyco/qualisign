@@ -168,6 +168,7 @@ create table methods
 (
     clazz varchar not null,
     name varchar not null,
+    access_modifier varchar not null,
     constraint methods_pkey
         primary key (name),
     constraint methods_clazz_fkey

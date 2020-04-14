@@ -59,6 +59,7 @@ object RowExtensions {
       Method(
         row.clazz,
         row.name,
+        row.accessModifier,
       )
     }
   }

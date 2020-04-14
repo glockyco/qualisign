@@ -356,23 +356,26 @@ trait Tables {
 
   /** Entity class storing rows of table Methods
    *  @param clazz Database column clazz SqlType(varchar)
-   *  @param name Database column name SqlType(varchar), PrimaryKey */
-  case class MethodsRow(clazz: String, name: String)
+   *  @param name Database column name SqlType(varchar), PrimaryKey
+   *  @param accessModifier Database column access_modifier SqlType(varchar) */
+  case class MethodsRow(clazz: String, name: String, accessModifier: String)
   /** GetResult implicit for fetching MethodsRow objects using plain SQL queries */
   implicit def GetResultMethodsRow(implicit e0: GR[String]): GR[MethodsRow] = GR{
     prs => import prs._
-    MethodsRow.tupled((<<[String], <<[String]))
+    MethodsRow.tupled((<<[String], <<[String], <<[String]))
   }
   /** Table description of table methods. Objects of this class serve as prototypes for rows in queries. */
   class Methods(_tableTag: Tag) extends profile.api.Table[MethodsRow](_tableTag, "methods") {
-    def * = (clazz, name) <> (MethodsRow.tupled, MethodsRow.unapply)
+    def * = (clazz, name, accessModifier) <> (MethodsRow.tupled, MethodsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(clazz), Rep.Some(name))).shaped.<>({r=>import r._; _1.map(_=> MethodsRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(clazz), Rep.Some(name), Rep.Some(accessModifier))).shaped.<>({r=>import r._; _1.map(_=> MethodsRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column clazz SqlType(varchar) */
     val clazz: Rep[String] = column[String]("clazz")
     /** Database column name SqlType(varchar), PrimaryKey */
     val name: Rep[String] = column[String]("name", O.PrimaryKey)
+    /** Database column access_modifier SqlType(varchar) */
+    val accessModifier: Rep[String] = column[String]("access_modifier")
 
     /** Foreign key referencing Clazzes (database name methods_clazz_fkey) */
     lazy val clazzesFk = foreignKey("methods_clazz_fkey", clazz, Clazzes)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)

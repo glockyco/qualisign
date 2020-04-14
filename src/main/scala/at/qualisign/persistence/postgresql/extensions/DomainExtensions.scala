@@ -168,6 +168,7 @@ object DomainExtensions {
       Tables.MethodsRow(
         method.clazz,
         method.name,
+        method.accessModifier,
       )
     }
   }

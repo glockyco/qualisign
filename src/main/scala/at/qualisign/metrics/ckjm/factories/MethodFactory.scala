@@ -18,6 +18,13 @@ object MethodFactory {
 
     val name = s"${clazz.name}::${methodName}(${paramTypes}):${returnType}"
 
-    Method(clazz.name, name)
+    Method(clazz.name, name, getAccessModifier(methodType.getName))
+  }
+
+  private def getAccessModifier(name: String): String = {
+    val modifier = name.split(" ").head
+    val accessModifiers = Seq("public", "protected", "private")
+
+    if (accessModifiers.contains(modifier)) modifier else "default"
   }
 }

@@ -12,6 +12,15 @@ object MethodFactory {
 
     val name = s"${clazz.name}::${methodType.getName}(${argumentsString}):${methodType.getReturnValue}"
 
-    Method(clazz.name, name)
+    val modifiers = Option(methodType.getMetrics.getModifiers).map(m => m.getModifier.asScala).getOrElse(Seq()).toSeq
+
+    Method(clazz.name, name, getAccessModifier(modifiers))
+  }
+
+  private def getAccessModifier(modifiers: Seq[String]): String = {
+    val modifier = modifiers.headOption
+    val accessModifiers = Seq("public", "protected", "private")
+
+    modifier.filter(m => accessModifiers.contains(m)).getOrElse("default")
   }
 }

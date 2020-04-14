@@ -1,3 +1,3 @@
 package at.qualisign.domain
 
-case class Method(clazz: String, name: String)
+case class Method(clazz: String, name: String, accessModifier: String)
