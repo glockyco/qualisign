@@ -116,6 +116,8 @@ object DomainExtensions {
         metrics.mfa,
         metrics.moa,
         metrics.noc,
+        metrics.nom,
+        metrics.nop,
         metrics.npm,
         metrics.rfc,
         metrics.wmc,

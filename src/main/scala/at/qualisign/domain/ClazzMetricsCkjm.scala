@@ -17,6 +17,8 @@ case class ClazzMetricsCkjm(
   mfa: Double,
   moa: Int,
   noc: Int,
+  nom: Int,
+  nop: Int,
   npm: Int,
   rfc: Int,
   wmc: Int,

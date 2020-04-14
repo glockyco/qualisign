@@ -1,10 +1,10 @@
 package at.qualisign.metrics.ckjm.factories
 
-import at.qualisign.domain.{Clazz, ClazzMetricsCkjm}
+import at.qualisign.domain.{Clazz, ClazzMetricsCkjm, Method}
 import at.qualisign.metrics.ckjm.jaxb.ClassType
 
 object ClazzMetricsFactory {
-  def create(clazz: Clazz, classType: ClassType): ClazzMetricsCkjm = {
+  def create(clazz: Clazz, classType: ClassType, methods: Seq[Method]): ClazzMetricsCkjm = {
     ClazzMetricsCkjm(
       clazz.name,
       classType.getAmc,
@@ -22,6 +22,8 @@ object ClazzMetricsFactory {
       classType.getMfa,
       classType.getMoa.intValue,
       classType.getNoc.intValue,
+      methods.length,
+      methods.count(m => m.accessModifier != "private"),
       classType.getNpm.intValue,
       classType.getRfc.intValue,
       classType.getWmc.intValue,

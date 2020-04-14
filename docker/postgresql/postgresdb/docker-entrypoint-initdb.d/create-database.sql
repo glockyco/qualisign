@@ -114,6 +114,8 @@ create table clazz_metrics_ckjm
     mfa float not null,
     moa int not null,
     noc int not null,
+    nom int not null,
+    nop int not null,
     npm int not null,
     rfc int not null,
     wmc int not null,
