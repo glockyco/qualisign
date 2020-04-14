@@ -38,52 +38,11 @@ object DomainExtensions {
     }
   }
 
-  implicit class ProjectMetricsJHawkAsRowExtension(metrics: ProjectMetricsJHawk) {
-    def asRow: Tables.ProjectMetricsJhawkRow = {
-      Tables.ProjectMetricsJhawkRow(
-        metrics.project,
-        metrics.tl,
-        metrics.bl,
-        metrics.ci,
-        metrics.co,
-      )
-    }
-  }
-
   implicit class PakkageAsRowExtension(pakkage: Pakkage) {
     def asRow: Tables.PakkagesRow = {
       Tables.PakkagesRow(
         pakkage.project,
         pakkage.name,
-      )
-    }
-  }
-
-  implicit class PakkageMetricsJHawkAsRowExtension(metrics: PakkageMetricsJHawk) {
-    def asRow: Tables.PakkageMetricsJhawkRow = {
-      Tables.PakkageMetricsJhawkRow(
-        metrics.pakkage,
-        metrics.abstractness,
-        metrics.avcc,
-        metrics.cumulativeNumberOfCommentLines,
-        metrics.cumulativeNumberOfComments,
-        metrics.distance,
-        metrics.fanin,
-        metrics.fanout,
-        metrics.halsteadCumulativeBugs,
-        metrics.halsteadCumulativeLength,
-        metrics.halsteadCumulativeVolume,
-        metrics.halsteadEffort,
-        metrics.instability,
-        metrics.loc,
-        metrics.maintainabilityIndex,
-        metrics.maintainabilityIndexNC,
-        metrics.maxcc,
-        metrics.numberOfClasses,
-        metrics.numberOfMethods,
-        metrics.numberOfStatements,
-        metrics.rvf,
-        metrics.tcc,
       )
     }
   }
@@ -125,46 +84,6 @@ object DomainExtensions {
     }
   }
 
-  implicit class ClazzMetricsJHawkAsRowExtension(metrics: ClazzMetricsJHawk) {
-    def asRow: Tables.ClazzMetricsJhawkRow = {
-      Tables.ClazzMetricsJhawkRow(
-        metrics.clazz,
-        metrics.avcc,
-        metrics.cbo,
-        metrics.coh,
-        metrics.cumulativeNumberOfCommentLines,
-        metrics.cumulativeNumberOfComments,
-        metrics.dit,
-        metrics.fanIn,
-        metrics.fanOut,
-        metrics.halsteadCumulativeBugs,
-        metrics.halsteadCumulativeLength,
-        metrics.halsteadCumulativeVolume,
-        metrics.halsteadEffort,
-        metrics.lcom,
-        metrics.lcom2,
-        metrics.loc,
-        metrics.maintainabilityIndex,
-        metrics.maintainabilityIndexNC,
-        metrics.maxcc,
-        metrics.messagePassingCoupling,
-        metrics.numberOfCommands,
-        metrics.numberOfMethods,
-        metrics.numberOfQueries,
-        metrics.numberOfStatements,
-        metrics.numberOfSubClasses,
-        metrics.numberOfSuperClasses,
-        metrics.responseForClass,
-        metrics.reuseRation,
-        metrics.revf,
-        metrics.six,
-        metrics.specializationRation,
-        metrics.tcc,
-        metrics.unweightedClassSize,
-      )
-    }
-  }
-
   implicit class MethodAsRowExtension(method: Method) {
     def asRow: Tables.MethodsRow = {
       Tables.MethodsRow(
@@ -180,35 +99,6 @@ object DomainExtensions {
       Tables.MethodMetricsCkjmRow(
         metrics.method,
         metrics.cc,
-      )
-    }
-  }
-
-  implicit class MethodMetricsJHawkAsRowExtension(metrics: MethodMetricsJHawk) {
-    def asRow: Tables.MethodMetricsJhawkRow = {
-      Tables.MethodMetricsJhawkRow(
-        metrics.method,
-        metrics.cyclomaticComplexity,
-        metrics.halsteadBugs,
-        metrics.halsteadDifficulty,
-        metrics.halsteadEffort,
-        metrics.halsteadLength,
-        metrics.halsteadVocabulary,
-        metrics.halsteadVolume,
-        metrics.loc,
-        metrics.maxDepthOfNesting,
-        metrics.numberOfArguments,
-        metrics.numberOfCasts,
-        metrics.numberOfCommentLines,
-        metrics.numberOfComments,
-        metrics.numberOfExpressions,
-        metrics.numberOfLoops,
-        metrics.numberOfOperands,
-        metrics.numberOfOperators,
-        metrics.numberOfStatements,
-        metrics.numberOfVariableDeclarations,
-        metrics.numberOfVariableReferences,
-        metrics.totalNesting,
       )
     }
   }

@@ -33,19 +33,6 @@ create table project_languages
         foreign key (project) references projects on delete cascade
 );
 
-create table project_metrics_jhawk
-(
-    project varchar not null,
-    tl int not null,
-    bl int not null,
-    ci int not null,
-    co int not null,
-    constraint project_metrics_jhawk_pkey
-        primary key (project),
-    constraint project_metrics_jhawk_project_fkey
-        foreign key (project) references projects on delete cascade
-);
-
 create table pakkages
 (
     project varchar not null,
@@ -54,36 +41,6 @@ create table pakkages
         primary key (name),
     constraint pakkages_project_fkey
         foreign key (project) references projects on delete cascade
-);
-
-create table pakkage_metrics_jhawk
-(
-    pakkage varchar not null,
-    abstractness float not null,
-    avcc float not null,
-    cumulative_number_of_comment_lines int not null,
-    cumulative_number_of_comments int not null,
-    distance float not null,
-    fanin int not null,
-    fanout int not null,
-    halstead_cumulative_bugs float not null,
-    halstead_cumulative_length int not null,
-    halstead_cumulative_volume float not null,
-    halstead_effort float not null,
-    instability float not null,
-    loc int not null,
-    maintainability_index float not null,
-    maintainability_index_nc float not null,
-    maxcc int not null,
-    number_of_classes int not null,
-    number_of_methods int not null,
-    number_of_statements int not null,
-    rvf int not null,
-    tcc int not null,
-    constraint pakkage_metrics_jhawk_pkey
-        primary key (pakkage),
-    constraint pakkage_metrics_jhawk_pakkage_fkey
-        foreign key (pakkage) references pakkages on delete cascade
 );
 
 create table clazzes
@@ -125,47 +82,6 @@ create table clazz_metrics_ckjm
         foreign key (clazz) references clazzes on delete cascade
 );
 
-create table clazz_metrics_jhawk
-(
-    clazz varchar not null,
-    avcc float not null,
-    cbo int not null,
-    coh float not null,
-    cumulative_number_of_comment_lines int not null,
-    cumulative_number_of_comments int not null,
-    dit int not null,
-    fan_in int not null,
-    fan_out int not null,
-    halstead_cumulative_bugs float not null,
-    halstead_cumulative_length int not null,
-    halstead_cumulative_volume float not null,
-    halstead_effort float not null,
-    lcom float not null,
-    lcom2 float not null,
-    loc int not null,
-    maintainability_index float not null,
-    maintainability_index_nc float not null,
-    maxcc int not null,
-    message_passing_coupling int not null,
-    number_of_commands int not null,
-    number_of_methods int not null,
-    number_of_queries int not null,
-    number_of_statements int not null,
-    number_of_sub_classes int not null,
-    number_of_super_classes int not null,
-    response_for_class int not null,
-    reuse_ration float not null,
-    revf float not null,
-    six float not null,
-    specialization_ration float not null,
-    tcc int not null,
-    unweighted_class_size int not null,
-    constraint clazz_metrics_jhawk_pkey
-        primary key (clazz),
-    constraint clazz_metrics_jhawk_clazz_fkey
-        foreign key (clazz) references clazzes on delete cascade
-);
-
 create table methods
 (
     clazz varchar not null,
@@ -184,36 +100,6 @@ create table method_metrics_ckjm
     constraint method_metrics_ckjm_pkey
         primary key (method),
     constraint method_metrics_ckjm_method_fkey
-        foreign key (method) references methods on delete cascade
-);
-
-create table method_metrics_jhawk
-(
-    method varchar not null,
-    cyclomatic_complexity int not null,
-    halstead_bugs float not null,
-    halstead_difficulty float not null,
-    halstead_effort float not null,
-    halstead_length int not null,
-    halstead_vocabulary int not null,
-    halstead_volume float not null,
-    loc int not null,
-    max_depth_of_nesting int not null,
-    number_of_arguments int not null,
-    number_of_casts int not null,
-    number_of_comment_lines int not null,
-    number_of_comments int not null,
-    number_of_expressions int not null,
-    number_of_loops int not null,
-    number_of_operands int not null,
-    number_of_operators int not null,
-    number_of_statements int not null,
-    number_of_variable_declarations int not null,
-    number_of_variable_references int not null,
-    total_nesting int not null,
-    constraint method_metrics_jhawk_pkey
-        primary key (method),
-    constraint method_metrics_jhawk_method_fkey
         foreign key (method) references methods on delete cascade
 );
 

@@ -179,9 +179,6 @@ $RECYCLE.BIN/
 
 ### Project Specific Rules ###
 
-tools/jhawk-command-line/**
-!tools/jhawk-command-line/README.md
-
 data/**
 
 ### End of Project Specific Rules ###

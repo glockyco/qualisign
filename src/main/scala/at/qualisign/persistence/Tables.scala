@@ -10,13 +10,11 @@ trait Tables {
   val profile: slick.jdbc.JdbcProfile
   import profile.api._
   import slick.model.ForeignKeyAction
-  import slick.collection.heterogeneous._
-  import slick.collection.heterogeneous.syntax._
   // NOTE: GetResult mappers for plain SQL are only generated for tables where Slick knows how to map the types of all columns.
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Clazzes.schema, ClazzMetricsCkjm.schema, ClazzMetricsJhawk.schema, MethodMetricsCkjm.schema, MethodMetricsJhawk.schema, Methods.schema, PakkageMetricsJhawk.schema, Pakkages.schema, PatternInstances.schema, PatternRoles.schema, ProjectLanguages.schema, ProjectMetricsJhawk.schema, Projects.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Clazzes.schema, ClazzMetricsCkjm.schema, MethodMetricsCkjm.schema, Methods.schema, Pakkages.schema, PatternInstances.schema, PatternRoles.schema, ProjectLanguages.schema, Projects.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -129,125 +127,6 @@ trait Tables {
   /** Collection-like TableQuery object for table ClazzMetricsCkjm */
   lazy val ClazzMetricsCkjm = new TableQuery(tag => new ClazzMetricsCkjm(tag))
 
-  /** Entity class storing rows of table ClazzMetricsJhawk
-   *  @param clazz Database column clazz SqlType(varchar), PrimaryKey
-   *  @param avcc Database column avcc SqlType(float8)
-   *  @param cbo Database column cbo SqlType(int4)
-   *  @param coh Database column coh SqlType(float8)
-   *  @param cumulativeNumberOfCommentLines Database column cumulative_number_of_comment_lines SqlType(int4)
-   *  @param cumulativeNumberOfComments Database column cumulative_number_of_comments SqlType(int4)
-   *  @param dit Database column dit SqlType(int4)
-   *  @param fanIn Database column fan_in SqlType(int4)
-   *  @param fanOut Database column fan_out SqlType(int4)
-   *  @param halsteadCumulativeBugs Database column halstead_cumulative_bugs SqlType(float8)
-   *  @param halsteadCumulativeLength Database column halstead_cumulative_length SqlType(int4)
-   *  @param halsteadCumulativeVolume Database column halstead_cumulative_volume SqlType(float8)
-   *  @param halsteadEffort Database column halstead_effort SqlType(float8)
-   *  @param lcom Database column lcom SqlType(float8)
-   *  @param lcom2 Database column lcom2 SqlType(float8)
-   *  @param loc Database column loc SqlType(int4)
-   *  @param maintainabilityIndex Database column maintainability_index SqlType(float8)
-   *  @param maintainabilityIndexNc Database column maintainability_index_nc SqlType(float8)
-   *  @param maxcc Database column maxcc SqlType(int4)
-   *  @param messagePassingCoupling Database column message_passing_coupling SqlType(int4)
-   *  @param numberOfCommands Database column number_of_commands SqlType(int4)
-   *  @param numberOfMethods Database column number_of_methods SqlType(int4)
-   *  @param numberOfQueries Database column number_of_queries SqlType(int4)
-   *  @param numberOfStatements Database column number_of_statements SqlType(int4)
-   *  @param numberOfSubClasses Database column number_of_sub_classes SqlType(int4)
-   *  @param numberOfSuperClasses Database column number_of_super_classes SqlType(int4)
-   *  @param responseForClass Database column response_for_class SqlType(int4)
-   *  @param reuseRation Database column reuse_ration SqlType(float8)
-   *  @param revf Database column revf SqlType(float8)
-   *  @param six Database column six SqlType(float8)
-   *  @param specializationRation Database column specialization_ration SqlType(float8)
-   *  @param tcc Database column tcc SqlType(int4)
-   *  @param unweightedClassSize Database column unweighted_class_size SqlType(int4) */
-  case class ClazzMetricsJhawkRow(clazz: String, avcc: Double, cbo: Int, coh: Double, cumulativeNumberOfCommentLines: Int, cumulativeNumberOfComments: Int, dit: Int, fanIn: Int, fanOut: Int, halsteadCumulativeBugs: Double, halsteadCumulativeLength: Int, halsteadCumulativeVolume: Double, halsteadEffort: Double, lcom: Double, lcom2: Double, loc: Int, maintainabilityIndex: Double, maintainabilityIndexNc: Double, maxcc: Int, messagePassingCoupling: Int, numberOfCommands: Int, numberOfMethods: Int, numberOfQueries: Int, numberOfStatements: Int, numberOfSubClasses: Int, numberOfSuperClasses: Int, responseForClass: Int, reuseRation: Double, revf: Double, six: Double, specializationRation: Double, tcc: Int, unweightedClassSize: Int)
-  /** GetResult implicit for fetching ClazzMetricsJhawkRow objects using plain SQL queries */
-  implicit def GetResultClazzMetricsJhawkRow(implicit e0: GR[String], e1: GR[Double], e2: GR[Int]): GR[ClazzMetricsJhawkRow] = GR{
-    prs => import prs._
-    ClazzMetricsJhawkRow(<<[String], <<[Double], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<[Double], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[Double], <<[Double], <<[Double], <<[Int], <<[Int])
-  }
-  /** Table description of table clazz_metrics_jhawk. Objects of this class serve as prototypes for rows in queries. */
-  class ClazzMetricsJhawk(_tableTag: Tag) extends profile.api.Table[ClazzMetricsJhawkRow](_tableTag, "clazz_metrics_jhawk") {
-    def * = (clazz :: avcc :: cbo :: coh :: cumulativeNumberOfCommentLines :: cumulativeNumberOfComments :: dit :: fanIn :: fanOut :: halsteadCumulativeBugs :: halsteadCumulativeLength :: halsteadCumulativeVolume :: halsteadEffort :: lcom :: lcom2 :: loc :: maintainabilityIndex :: maintainabilityIndexNc :: maxcc :: messagePassingCoupling :: numberOfCommands :: numberOfMethods :: numberOfQueries :: numberOfStatements :: numberOfSubClasses :: numberOfSuperClasses :: responseForClass :: reuseRation :: revf :: six :: specializationRation :: tcc :: unweightedClassSize :: HNil).mapTo[ClazzMetricsJhawkRow]
-    /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(clazz) :: Rep.Some(avcc) :: Rep.Some(cbo) :: Rep.Some(coh) :: Rep.Some(cumulativeNumberOfCommentLines) :: Rep.Some(cumulativeNumberOfComments) :: Rep.Some(dit) :: Rep.Some(fanIn) :: Rep.Some(fanOut) :: Rep.Some(halsteadCumulativeBugs) :: Rep.Some(halsteadCumulativeLength) :: Rep.Some(halsteadCumulativeVolume) :: Rep.Some(halsteadEffort) :: Rep.Some(lcom) :: Rep.Some(lcom2) :: Rep.Some(loc) :: Rep.Some(maintainabilityIndex) :: Rep.Some(maintainabilityIndexNc) :: Rep.Some(maxcc) :: Rep.Some(messagePassingCoupling) :: Rep.Some(numberOfCommands) :: Rep.Some(numberOfMethods) :: Rep.Some(numberOfQueries) :: Rep.Some(numberOfStatements) :: Rep.Some(numberOfSubClasses) :: Rep.Some(numberOfSuperClasses) :: Rep.Some(responseForClass) :: Rep.Some(reuseRation) :: Rep.Some(revf) :: Rep.Some(six) :: Rep.Some(specializationRation) :: Rep.Some(tcc) :: Rep.Some(unweightedClassSize) :: HNil).shaped.<>(r => ClazzMetricsJhawkRow(r(0).asInstanceOf[Option[String]].get, r(1).asInstanceOf[Option[Double]].get, r(2).asInstanceOf[Option[Int]].get, r(3).asInstanceOf[Option[Double]].get, r(4).asInstanceOf[Option[Int]].get, r(5).asInstanceOf[Option[Int]].get, r(6).asInstanceOf[Option[Int]].get, r(7).asInstanceOf[Option[Int]].get, r(8).asInstanceOf[Option[Int]].get, r(9).asInstanceOf[Option[Double]].get, r(10).asInstanceOf[Option[Int]].get, r(11).asInstanceOf[Option[Double]].get, r(12).asInstanceOf[Option[Double]].get, r(13).asInstanceOf[Option[Double]].get, r(14).asInstanceOf[Option[Double]].get, r(15).asInstanceOf[Option[Int]].get, r(16).asInstanceOf[Option[Double]].get, r(17).asInstanceOf[Option[Double]].get, r(18).asInstanceOf[Option[Int]].get, r(19).asInstanceOf[Option[Int]].get, r(20).asInstanceOf[Option[Int]].get, r(21).asInstanceOf[Option[Int]].get, r(22).asInstanceOf[Option[Int]].get, r(23).asInstanceOf[Option[Int]].get, r(24).asInstanceOf[Option[Int]].get, r(25).asInstanceOf[Option[Int]].get, r(26).asInstanceOf[Option[Int]].get, r(27).asInstanceOf[Option[Double]].get, r(28).asInstanceOf[Option[Double]].get, r(29).asInstanceOf[Option[Double]].get, r(30).asInstanceOf[Option[Double]].get, r(31).asInstanceOf[Option[Int]].get, r(32).asInstanceOf[Option[Int]].get), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
-
-    /** Database column clazz SqlType(varchar), PrimaryKey */
-    val clazz: Rep[String] = column[String]("clazz", O.PrimaryKey)
-    /** Database column avcc SqlType(float8) */
-    val avcc: Rep[Double] = column[Double]("avcc")
-    /** Database column cbo SqlType(int4) */
-    val cbo: Rep[Int] = column[Int]("cbo")
-    /** Database column coh SqlType(float8) */
-    val coh: Rep[Double] = column[Double]("coh")
-    /** Database column cumulative_number_of_comment_lines SqlType(int4) */
-    val cumulativeNumberOfCommentLines: Rep[Int] = column[Int]("cumulative_number_of_comment_lines")
-    /** Database column cumulative_number_of_comments SqlType(int4) */
-    val cumulativeNumberOfComments: Rep[Int] = column[Int]("cumulative_number_of_comments")
-    /** Database column dit SqlType(int4) */
-    val dit: Rep[Int] = column[Int]("dit")
-    /** Database column fan_in SqlType(int4) */
-    val fanIn: Rep[Int] = column[Int]("fan_in")
-    /** Database column fan_out SqlType(int4) */
-    val fanOut: Rep[Int] = column[Int]("fan_out")
-    /** Database column halstead_cumulative_bugs SqlType(float8) */
-    val halsteadCumulativeBugs: Rep[Double] = column[Double]("halstead_cumulative_bugs")
-    /** Database column halstead_cumulative_length SqlType(int4) */
-    val halsteadCumulativeLength: Rep[Int] = column[Int]("halstead_cumulative_length")
-    /** Database column halstead_cumulative_volume SqlType(float8) */
-    val halsteadCumulativeVolume: Rep[Double] = column[Double]("halstead_cumulative_volume")
-    /** Database column halstead_effort SqlType(float8) */
-    val halsteadEffort: Rep[Double] = column[Double]("halstead_effort")
-    /** Database column lcom SqlType(float8) */
-    val lcom: Rep[Double] = column[Double]("lcom")
-    /** Database column lcom2 SqlType(float8) */
-    val lcom2: Rep[Double] = column[Double]("lcom2")
-    /** Database column loc SqlType(int4) */
-    val loc: Rep[Int] = column[Int]("loc")
-    /** Database column maintainability_index SqlType(float8) */
-    val maintainabilityIndex: Rep[Double] = column[Double]("maintainability_index")
-    /** Database column maintainability_index_nc SqlType(float8) */
-    val maintainabilityIndexNc: Rep[Double] = column[Double]("maintainability_index_nc")
-    /** Database column maxcc SqlType(int4) */
-    val maxcc: Rep[Int] = column[Int]("maxcc")
-    /** Database column message_passing_coupling SqlType(int4) */
-    val messagePassingCoupling: Rep[Int] = column[Int]("message_passing_coupling")
-    /** Database column number_of_commands SqlType(int4) */
-    val numberOfCommands: Rep[Int] = column[Int]("number_of_commands")
-    /** Database column number_of_methods SqlType(int4) */
-    val numberOfMethods: Rep[Int] = column[Int]("number_of_methods")
-    /** Database column number_of_queries SqlType(int4) */
-    val numberOfQueries: Rep[Int] = column[Int]("number_of_queries")
-    /** Database column number_of_statements SqlType(int4) */
-    val numberOfStatements: Rep[Int] = column[Int]("number_of_statements")
-    /** Database column number_of_sub_classes SqlType(int4) */
-    val numberOfSubClasses: Rep[Int] = column[Int]("number_of_sub_classes")
-    /** Database column number_of_super_classes SqlType(int4) */
-    val numberOfSuperClasses: Rep[Int] = column[Int]("number_of_super_classes")
-    /** Database column response_for_class SqlType(int4) */
-    val responseForClass: Rep[Int] = column[Int]("response_for_class")
-    /** Database column reuse_ration SqlType(float8) */
-    val reuseRation: Rep[Double] = column[Double]("reuse_ration")
-    /** Database column revf SqlType(float8) */
-    val revf: Rep[Double] = column[Double]("revf")
-    /** Database column six SqlType(float8) */
-    val six: Rep[Double] = column[Double]("six")
-    /** Database column specialization_ration SqlType(float8) */
-    val specializationRation: Rep[Double] = column[Double]("specialization_ration")
-    /** Database column tcc SqlType(int4) */
-    val tcc: Rep[Int] = column[Int]("tcc")
-    /** Database column unweighted_class_size SqlType(int4) */
-    val unweightedClassSize: Rep[Int] = column[Int]("unweighted_class_size")
-
-    /** Foreign key referencing Clazzes (database name clazz_metrics_clazz_fkey) */
-    lazy val clazzesFk = foreignKey("clazz_metrics_clazz_fkey", clazz :: HNil, Clazzes)(r => r.name :: HNil, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
-  }
-  /** Collection-like TableQuery object for table ClazzMetricsJhawk */
-  lazy val ClazzMetricsJhawk = new TableQuery(tag => new ClazzMetricsJhawk(tag))
-
   /** Entity class storing rows of table MethodMetricsCkjm
    *  @param method Database column method SqlType(varchar), PrimaryKey
    *  @param cc Database column cc SqlType(int4) */
@@ -273,92 +152,6 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table MethodMetricsCkjm */
   lazy val MethodMetricsCkjm = new TableQuery(tag => new MethodMetricsCkjm(tag))
-
-  /** Entity class storing rows of table MethodMetricsJhawk
-   *  @param method Database column method SqlType(varchar), PrimaryKey
-   *  @param cyclomaticComplexity Database column cyclomatic_complexity SqlType(int4)
-   *  @param halsteadBugs Database column halstead_bugs SqlType(float8)
-   *  @param halsteadDifficulty Database column halstead_difficulty SqlType(float8)
-   *  @param halsteadEffort Database column halstead_effort SqlType(float8)
-   *  @param halsteadLength Database column halstead_length SqlType(int4)
-   *  @param halsteadVocabulary Database column halstead_vocabulary SqlType(int4)
-   *  @param halsteadVolume Database column halstead_volume SqlType(float8)
-   *  @param loc Database column loc SqlType(int4)
-   *  @param maxDepthOfNesting Database column max_depth_of_nesting SqlType(int4)
-   *  @param numberOfArguments Database column number_of_arguments SqlType(int4)
-   *  @param numberOfCasts Database column number_of_casts SqlType(int4)
-   *  @param numberOfCommentLines Database column number_of_comment_lines SqlType(int4)
-   *  @param numberOfComments Database column number_of_comments SqlType(int4)
-   *  @param numberOfExpressions Database column number_of_expressions SqlType(int4)
-   *  @param numberOfLoops Database column number_of_loops SqlType(int4)
-   *  @param numberOfOperands Database column number_of_operands SqlType(int4)
-   *  @param numberOfOperators Database column number_of_operators SqlType(int4)
-   *  @param numberOfStatements Database column number_of_statements SqlType(int4)
-   *  @param numberOfVariableDeclarations Database column number_of_variable_declarations SqlType(int4)
-   *  @param numberOfVariableReferences Database column number_of_variable_references SqlType(int4)
-   *  @param totalNesting Database column total_nesting SqlType(int4) */
-  case class MethodMetricsJhawkRow(method: String, cyclomaticComplexity: Int, halsteadBugs: Double, halsteadDifficulty: Double, halsteadEffort: Double, halsteadLength: Int, halsteadVocabulary: Int, halsteadVolume: Double, loc: Int, maxDepthOfNesting: Int, numberOfArguments: Int, numberOfCasts: Int, numberOfCommentLines: Int, numberOfComments: Int, numberOfExpressions: Int, numberOfLoops: Int, numberOfOperands: Int, numberOfOperators: Int, numberOfStatements: Int, numberOfVariableDeclarations: Int, numberOfVariableReferences: Int, totalNesting: Int)
-  /** GetResult implicit for fetching MethodMetricsJhawkRow objects using plain SQL queries */
-  implicit def GetResultMethodMetricsJhawkRow(implicit e0: GR[String], e1: GR[Int], e2: GR[Double]): GR[MethodMetricsJhawkRow] = GR{
-    prs => import prs._
-    MethodMetricsJhawkRow.tupled((<<[String], <<[Int], <<[Double], <<[Double], <<[Double], <<[Int], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
-  }
-  /** Table description of table method_metrics_jhawk. Objects of this class serve as prototypes for rows in queries. */
-  class MethodMetricsJhawk(_tableTag: Tag) extends profile.api.Table[MethodMetricsJhawkRow](_tableTag, "method_metrics_jhawk") {
-    def * = (method, cyclomaticComplexity, halsteadBugs, halsteadDifficulty, halsteadEffort, halsteadLength, halsteadVocabulary, halsteadVolume, loc, maxDepthOfNesting, numberOfArguments, numberOfCasts, numberOfCommentLines, numberOfComments, numberOfExpressions, numberOfLoops, numberOfOperands, numberOfOperators, numberOfStatements, numberOfVariableDeclarations, numberOfVariableReferences, totalNesting) <> (MethodMetricsJhawkRow.tupled, MethodMetricsJhawkRow.unapply)
-    /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(method), Rep.Some(cyclomaticComplexity), Rep.Some(halsteadBugs), Rep.Some(halsteadDifficulty), Rep.Some(halsteadEffort), Rep.Some(halsteadLength), Rep.Some(halsteadVocabulary), Rep.Some(halsteadVolume), Rep.Some(loc), Rep.Some(maxDepthOfNesting), Rep.Some(numberOfArguments), Rep.Some(numberOfCasts), Rep.Some(numberOfCommentLines), Rep.Some(numberOfComments), Rep.Some(numberOfExpressions), Rep.Some(numberOfLoops), Rep.Some(numberOfOperands), Rep.Some(numberOfOperators), Rep.Some(numberOfStatements), Rep.Some(numberOfVariableDeclarations), Rep.Some(numberOfVariableReferences), Rep.Some(totalNesting))).shaped.<>({r=>import r._; _1.map(_=> MethodMetricsJhawkRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19.get, _20.get, _21.get, _22.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
-
-    /** Database column method SqlType(varchar), PrimaryKey */
-    val method: Rep[String] = column[String]("method", O.PrimaryKey)
-    /** Database column cyclomatic_complexity SqlType(int4) */
-    val cyclomaticComplexity: Rep[Int] = column[Int]("cyclomatic_complexity")
-    /** Database column halstead_bugs SqlType(float8) */
-    val halsteadBugs: Rep[Double] = column[Double]("halstead_bugs")
-    /** Database column halstead_difficulty SqlType(float8) */
-    val halsteadDifficulty: Rep[Double] = column[Double]("halstead_difficulty")
-    /** Database column halstead_effort SqlType(float8) */
-    val halsteadEffort: Rep[Double] = column[Double]("halstead_effort")
-    /** Database column halstead_length SqlType(int4) */
-    val halsteadLength: Rep[Int] = column[Int]("halstead_length")
-    /** Database column halstead_vocabulary SqlType(int4) */
-    val halsteadVocabulary: Rep[Int] = column[Int]("halstead_vocabulary")
-    /** Database column halstead_volume SqlType(float8) */
-    val halsteadVolume: Rep[Double] = column[Double]("halstead_volume")
-    /** Database column loc SqlType(int4) */
-    val loc: Rep[Int] = column[Int]("loc")
-    /** Database column max_depth_of_nesting SqlType(int4) */
-    val maxDepthOfNesting: Rep[Int] = column[Int]("max_depth_of_nesting")
-    /** Database column number_of_arguments SqlType(int4) */
-    val numberOfArguments: Rep[Int] = column[Int]("number_of_arguments")
-    /** Database column number_of_casts SqlType(int4) */
-    val numberOfCasts: Rep[Int] = column[Int]("number_of_casts")
-    /** Database column number_of_comment_lines SqlType(int4) */
-    val numberOfCommentLines: Rep[Int] = column[Int]("number_of_comment_lines")
-    /** Database column number_of_comments SqlType(int4) */
-    val numberOfComments: Rep[Int] = column[Int]("number_of_comments")
-    /** Database column number_of_expressions SqlType(int4) */
-    val numberOfExpressions: Rep[Int] = column[Int]("number_of_expressions")
-    /** Database column number_of_loops SqlType(int4) */
-    val numberOfLoops: Rep[Int] = column[Int]("number_of_loops")
-    /** Database column number_of_operands SqlType(int4) */
-    val numberOfOperands: Rep[Int] = column[Int]("number_of_operands")
-    /** Database column number_of_operators SqlType(int4) */
-    val numberOfOperators: Rep[Int] = column[Int]("number_of_operators")
-    /** Database column number_of_statements SqlType(int4) */
-    val numberOfStatements: Rep[Int] = column[Int]("number_of_statements")
-    /** Database column number_of_variable_declarations SqlType(int4) */
-    val numberOfVariableDeclarations: Rep[Int] = column[Int]("number_of_variable_declarations")
-    /** Database column number_of_variable_references SqlType(int4) */
-    val numberOfVariableReferences: Rep[Int] = column[Int]("number_of_variable_references")
-    /** Database column total_nesting SqlType(int4) */
-    val totalNesting: Rep[Int] = column[Int]("total_nesting")
-
-    /** Foreign key referencing Methods (database name method_metrics_method_fkey) */
-    lazy val methodsFk = foreignKey("method_metrics_method_fkey", method, Methods)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
-  }
-  /** Collection-like TableQuery object for table MethodMetricsJhawk */
-  lazy val MethodMetricsJhawk = new TableQuery(tag => new MethodMetricsJhawk(tag))
 
   /** Entity class storing rows of table Methods
    *  @param clazz Database column clazz SqlType(varchar)
@@ -388,92 +181,6 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Methods */
   lazy val Methods = new TableQuery(tag => new Methods(tag))
-
-  /** Entity class storing rows of table PakkageMetricsJhawk
-   *  @param pakkage Database column pakkage SqlType(varchar), PrimaryKey
-   *  @param abstractness Database column abstractness SqlType(float8)
-   *  @param avcc Database column avcc SqlType(float8)
-   *  @param cumulativeNumberOfCommentLines Database column cumulative_number_of_comment_lines SqlType(int4)
-   *  @param cumulativeNumberOfComments Database column cumulative_number_of_comments SqlType(int4)
-   *  @param distance Database column distance SqlType(float8)
-   *  @param fanin Database column fanin SqlType(int4)
-   *  @param fanout Database column fanout SqlType(int4)
-   *  @param halsteadCumulativeBugs Database column halstead_cumulative_bugs SqlType(float8)
-   *  @param halsteadCumulativeLength Database column halstead_cumulative_length SqlType(int4)
-   *  @param halsteadCumulativeVolume Database column halstead_cumulative_volume SqlType(float8)
-   *  @param halsteadEffort Database column halstead_effort SqlType(float8)
-   *  @param instability Database column instability SqlType(float8)
-   *  @param loc Database column loc SqlType(int4)
-   *  @param maintainabilityIndex Database column maintainability_index SqlType(float8)
-   *  @param maintainabilityIndexNc Database column maintainability_index_nc SqlType(float8)
-   *  @param maxcc Database column maxcc SqlType(int4)
-   *  @param numberOfClasses Database column number_of_classes SqlType(int4)
-   *  @param numberOfMethods Database column number_of_methods SqlType(int4)
-   *  @param numberOfStatements Database column number_of_statements SqlType(int4)
-   *  @param rvf Database column rvf SqlType(int4)
-   *  @param tcc Database column tcc SqlType(int4) */
-  case class PakkageMetricsJhawkRow(pakkage: String, abstractness: Double, avcc: Double, cumulativeNumberOfCommentLines: Int, cumulativeNumberOfComments: Int, distance: Double, fanin: Int, fanout: Int, halsteadCumulativeBugs: Double, halsteadCumulativeLength: Int, halsteadCumulativeVolume: Double, halsteadEffort: Double, instability: Double, loc: Int, maintainabilityIndex: Double, maintainabilityIndexNc: Double, maxcc: Int, numberOfClasses: Int, numberOfMethods: Int, numberOfStatements: Int, rvf: Int, tcc: Int)
-  /** GetResult implicit for fetching PakkageMetricsJhawkRow objects using plain SQL queries */
-  implicit def GetResultPakkageMetricsJhawkRow(implicit e0: GR[String], e1: GR[Double], e2: GR[Int]): GR[PakkageMetricsJhawkRow] = GR{
-    prs => import prs._
-    PakkageMetricsJhawkRow.tupled((<<[String], <<[Double], <<[Double], <<[Int], <<[Int], <<[Double], <<[Int], <<[Int], <<[Double], <<[Int], <<[Double], <<[Double], <<[Double], <<[Int], <<[Double], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
-  }
-  /** Table description of table pakkage_metrics_jhawk. Objects of this class serve as prototypes for rows in queries. */
-  class PakkageMetricsJhawk(_tableTag: Tag) extends profile.api.Table[PakkageMetricsJhawkRow](_tableTag, "pakkage_metrics_jhawk") {
-    def * = (pakkage, abstractness, avcc, cumulativeNumberOfCommentLines, cumulativeNumberOfComments, distance, fanin, fanout, halsteadCumulativeBugs, halsteadCumulativeLength, halsteadCumulativeVolume, halsteadEffort, instability, loc, maintainabilityIndex, maintainabilityIndexNc, maxcc, numberOfClasses, numberOfMethods, numberOfStatements, rvf, tcc) <> (PakkageMetricsJhawkRow.tupled, PakkageMetricsJhawkRow.unapply)
-    /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(pakkage), Rep.Some(abstractness), Rep.Some(avcc), Rep.Some(cumulativeNumberOfCommentLines), Rep.Some(cumulativeNumberOfComments), Rep.Some(distance), Rep.Some(fanin), Rep.Some(fanout), Rep.Some(halsteadCumulativeBugs), Rep.Some(halsteadCumulativeLength), Rep.Some(halsteadCumulativeVolume), Rep.Some(halsteadEffort), Rep.Some(instability), Rep.Some(loc), Rep.Some(maintainabilityIndex), Rep.Some(maintainabilityIndexNc), Rep.Some(maxcc), Rep.Some(numberOfClasses), Rep.Some(numberOfMethods), Rep.Some(numberOfStatements), Rep.Some(rvf), Rep.Some(tcc))).shaped.<>({r=>import r._; _1.map(_=> PakkageMetricsJhawkRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19.get, _20.get, _21.get, _22.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
-
-    /** Database column pakkage SqlType(varchar), PrimaryKey */
-    val pakkage: Rep[String] = column[String]("pakkage", O.PrimaryKey)
-    /** Database column abstractness SqlType(float8) */
-    val abstractness: Rep[Double] = column[Double]("abstractness")
-    /** Database column avcc SqlType(float8) */
-    val avcc: Rep[Double] = column[Double]("avcc")
-    /** Database column cumulative_number_of_comment_lines SqlType(int4) */
-    val cumulativeNumberOfCommentLines: Rep[Int] = column[Int]("cumulative_number_of_comment_lines")
-    /** Database column cumulative_number_of_comments SqlType(int4) */
-    val cumulativeNumberOfComments: Rep[Int] = column[Int]("cumulative_number_of_comments")
-    /** Database column distance SqlType(float8) */
-    val distance: Rep[Double] = column[Double]("distance")
-    /** Database column fanin SqlType(int4) */
-    val fanin: Rep[Int] = column[Int]("fanin")
-    /** Database column fanout SqlType(int4) */
-    val fanout: Rep[Int] = column[Int]("fanout")
-    /** Database column halstead_cumulative_bugs SqlType(float8) */
-    val halsteadCumulativeBugs: Rep[Double] = column[Double]("halstead_cumulative_bugs")
-    /** Database column halstead_cumulative_length SqlType(int4) */
-    val halsteadCumulativeLength: Rep[Int] = column[Int]("halstead_cumulative_length")
-    /** Database column halstead_cumulative_volume SqlType(float8) */
-    val halsteadCumulativeVolume: Rep[Double] = column[Double]("halstead_cumulative_volume")
-    /** Database column halstead_effort SqlType(float8) */
-    val halsteadEffort: Rep[Double] = column[Double]("halstead_effort")
-    /** Database column instability SqlType(float8) */
-    val instability: Rep[Double] = column[Double]("instability")
-    /** Database column loc SqlType(int4) */
-    val loc: Rep[Int] = column[Int]("loc")
-    /** Database column maintainability_index SqlType(float8) */
-    val maintainabilityIndex: Rep[Double] = column[Double]("maintainability_index")
-    /** Database column maintainability_index_nc SqlType(float8) */
-    val maintainabilityIndexNc: Rep[Double] = column[Double]("maintainability_index_nc")
-    /** Database column maxcc SqlType(int4) */
-    val maxcc: Rep[Int] = column[Int]("maxcc")
-    /** Database column number_of_classes SqlType(int4) */
-    val numberOfClasses: Rep[Int] = column[Int]("number_of_classes")
-    /** Database column number_of_methods SqlType(int4) */
-    val numberOfMethods: Rep[Int] = column[Int]("number_of_methods")
-    /** Database column number_of_statements SqlType(int4) */
-    val numberOfStatements: Rep[Int] = column[Int]("number_of_statements")
-    /** Database column rvf SqlType(int4) */
-    val rvf: Rep[Int] = column[Int]("rvf")
-    /** Database column tcc SqlType(int4) */
-    val tcc: Rep[Int] = column[Int]("tcc")
-
-    /** Foreign key referencing Pakkages (database name pakkage_metrics_pakkage_fkey) */
-    lazy val pakkagesFk = foreignKey("pakkage_metrics_pakkage_fkey", pakkage, Pakkages)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
-  }
-  /** Collection-like TableQuery object for table PakkageMetricsJhawk */
-  lazy val PakkageMetricsJhawk = new TableQuery(tag => new PakkageMetricsJhawk(tag))
 
   /** Entity class storing rows of table Pakkages
    *  @param project Database column project SqlType(varchar)
@@ -593,41 +300,6 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table ProjectLanguages */
   lazy val ProjectLanguages = new TableQuery(tag => new ProjectLanguages(tag))
-
-  /** Entity class storing rows of table ProjectMetricsJhawk
-   *  @param project Database column project SqlType(varchar), PrimaryKey
-   *  @param tl Database column tl SqlType(int4)
-   *  @param bl Database column bl SqlType(int4)
-   *  @param ci Database column ci SqlType(int4)
-   *  @param co Database column co SqlType(int4) */
-  case class ProjectMetricsJhawkRow(project: String, tl: Int, bl: Int, ci: Int, co: Int)
-  /** GetResult implicit for fetching ProjectMetricsJhawkRow objects using plain SQL queries */
-  implicit def GetResultProjectMetricsJhawkRow(implicit e0: GR[String], e1: GR[Int]): GR[ProjectMetricsJhawkRow] = GR{
-    prs => import prs._
-    ProjectMetricsJhawkRow.tupled((<<[String], <<[Int], <<[Int], <<[Int], <<[Int]))
-  }
-  /** Table description of table project_metrics_jhawk. Objects of this class serve as prototypes for rows in queries. */
-  class ProjectMetricsJhawk(_tableTag: Tag) extends profile.api.Table[ProjectMetricsJhawkRow](_tableTag, "project_metrics_jhawk") {
-    def * = (project, tl, bl, ci, co) <> (ProjectMetricsJhawkRow.tupled, ProjectMetricsJhawkRow.unapply)
-    /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(project), Rep.Some(tl), Rep.Some(bl), Rep.Some(ci), Rep.Some(co))).shaped.<>({r=>import r._; _1.map(_=> ProjectMetricsJhawkRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
-
-    /** Database column project SqlType(varchar), PrimaryKey */
-    val project: Rep[String] = column[String]("project", O.PrimaryKey)
-    /** Database column tl SqlType(int4) */
-    val tl: Rep[Int] = column[Int]("tl")
-    /** Database column bl SqlType(int4) */
-    val bl: Rep[Int] = column[Int]("bl")
-    /** Database column ci SqlType(int4) */
-    val ci: Rep[Int] = column[Int]("ci")
-    /** Database column co SqlType(int4) */
-    val co: Rep[Int] = column[Int]("co")
-
-    /** Foreign key referencing Projects (database name project_metrics_project_fkey) */
-    lazy val projectsFk = foreignKey("project_metrics_project_fkey", project, Projects)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
-  }
-  /** Collection-like TableQuery object for table ProjectMetricsJhawk */
-  lazy val ProjectMetricsJhawk = new TableQuery(tag => new ProjectMetricsJhawk(tag))
 
   /** Entity class storing rows of table Projects
    *  @param name Database column name SqlType(varchar), PrimaryKey
