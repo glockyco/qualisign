@@ -18,9 +18,6 @@ class CkjmMetricsPersistenceImpl(database: Database) extends CkjmMetricsPersiste
     var clazzes = Seq[Clazz]()
     var clazzMetrics = Seq[ClazzMetricsCkjm]()
 
-    var methods = Seq[Method]()
-    var methodMetrics = Seq[MethodMetricsCkjm]()
-
     for (classType: ClassType <- ckjmType.getClazz.asScala) {
       val pakkage = PakkageFactory.create(project, classType)
 
@@ -28,8 +25,8 @@ class CkjmMetricsPersistenceImpl(database: Database) extends CkjmMetricsPersiste
 
       val clazz = ClazzFactory.create(pakkage, classType)
 
-      var clazzMethods = Seq[Method]()
-      var clazzMethodMetrics = Seq[MethodMetricsCkjm]()
+      var methods = Seq[Method]()
+      var methodMetrics = Seq[MethodMetricsCkjm]()
 
       for (methodType: MethodType <- classType.getCc.getMethod.asScala) {
         val method = MethodFactory.create(clazz, methodType)
@@ -37,12 +34,9 @@ class CkjmMetricsPersistenceImpl(database: Database) extends CkjmMetricsPersiste
 
         methods :+= method
         methodMetrics :+= methodMetric
-
-        clazzMethods :+= method
-        clazzMethodMetrics :+= methodMetric
       }
 
-      val clazzMetric = ClazzMetricsFactory.create(clazz, classType, clazzMethods, clazzMethodMetrics)
+      val clazzMetric = ClazzMetricsFactory.create(clazz, classType, methods, methodMetrics)
 
       clazzes :+= clazz
       clazzMetrics :+= clazzMetric
@@ -53,9 +47,6 @@ class CkjmMetricsPersistenceImpl(database: Database) extends CkjmMetricsPersiste
 
       DBIO.seq(clazzes.map(x => Tables.Clazzes.insertOrUpdate(x.asRow)): _ *),
       DBIO.seq(clazzMetrics.map(x => Tables.ClazzMetricsCkjm.insertOrUpdate(x.asRow)): _ *),
-
-      DBIO.seq(methods.map(x => Tables.Methods.insertOrUpdate(x.asRow)): _ *),
-      DBIO.seq(methodMetrics.map(x => Tables.MethodMetricsCkjm.insertOrUpdate(x.asRow)): _ *),
     ).asTry.map({
       case Success(_) => // do nothing
       case Failure(value) => println(value)

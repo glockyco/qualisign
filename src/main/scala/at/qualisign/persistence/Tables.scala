@@ -14,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Clazzes.schema, ClazzMetricsCkjm.schema, MethodMetricsCkjm.schema, Methods.schema, Pakkages.schema, PatternInstances.schema, PatternRoles.schema, ProjectLanguages.schema, Projects.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Clazzes.schema, ClazzMetricsCkjm.schema, Pakkages.schema, PatternInstances.schema, PatternRoles.schema, ProjectLanguages.schema, Projects.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -129,61 +129,6 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table ClazzMetricsCkjm */
   lazy val ClazzMetricsCkjm = new TableQuery(tag => new ClazzMetricsCkjm(tag))
-
-  /** Entity class storing rows of table MethodMetricsCkjm
-   *  @param method Database column method SqlType(varchar), PrimaryKey
-   *  @param cc Database column cc SqlType(int4) */
-  case class MethodMetricsCkjmRow(method: String, cc: Int)
-  /** GetResult implicit for fetching MethodMetricsCkjmRow objects using plain SQL queries */
-  implicit def GetResultMethodMetricsCkjmRow(implicit e0: GR[String], e1: GR[Int]): GR[MethodMetricsCkjmRow] = GR{
-    prs => import prs._
-    MethodMetricsCkjmRow.tupled((<<[String], <<[Int]))
-  }
-  /** Table description of table method_metrics_ckjm. Objects of this class serve as prototypes for rows in queries. */
-  class MethodMetricsCkjm(_tableTag: Tag) extends profile.api.Table[MethodMetricsCkjmRow](_tableTag, "method_metrics_ckjm") {
-    def * = (method, cc) <> (MethodMetricsCkjmRow.tupled, MethodMetricsCkjmRow.unapply)
-    /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(method), Rep.Some(cc))).shaped.<>({r=>import r._; _1.map(_=> MethodMetricsCkjmRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
-
-    /** Database column method SqlType(varchar), PrimaryKey */
-    val method: Rep[String] = column[String]("method", O.PrimaryKey)
-    /** Database column cc SqlType(int4) */
-    val cc: Rep[Int] = column[Int]("cc")
-
-    /** Foreign key referencing Methods (database name method_metrics_ckjm_method_fkey) */
-    lazy val methodsFk = foreignKey("method_metrics_ckjm_method_fkey", method, Methods)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
-  }
-  /** Collection-like TableQuery object for table MethodMetricsCkjm */
-  lazy val MethodMetricsCkjm = new TableQuery(tag => new MethodMetricsCkjm(tag))
-
-  /** Entity class storing rows of table Methods
-   *  @param clazz Database column clazz SqlType(varchar)
-   *  @param name Database column name SqlType(varchar), PrimaryKey
-   *  @param accessModifier Database column access_modifier SqlType(varchar) */
-  case class MethodsRow(clazz: String, name: String, accessModifier: String)
-  /** GetResult implicit for fetching MethodsRow objects using plain SQL queries */
-  implicit def GetResultMethodsRow(implicit e0: GR[String]): GR[MethodsRow] = GR{
-    prs => import prs._
-    MethodsRow.tupled((<<[String], <<[String], <<[String]))
-  }
-  /** Table description of table methods. Objects of this class serve as prototypes for rows in queries. */
-  class Methods(_tableTag: Tag) extends profile.api.Table[MethodsRow](_tableTag, "methods") {
-    def * = (clazz, name, accessModifier) <> (MethodsRow.tupled, MethodsRow.unapply)
-    /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(clazz), Rep.Some(name), Rep.Some(accessModifier))).shaped.<>({r=>import r._; _1.map(_=> MethodsRow.tupled((_1.get, _2.get, _3.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
-
-    /** Database column clazz SqlType(varchar) */
-    val clazz: Rep[String] = column[String]("clazz")
-    /** Database column name SqlType(varchar), PrimaryKey */
-    val name: Rep[String] = column[String]("name", O.PrimaryKey)
-    /** Database column access_modifier SqlType(varchar) */
-    val accessModifier: Rep[String] = column[String]("access_modifier")
-
-    /** Foreign key referencing Clazzes (database name methods_clazz_fkey) */
-    lazy val clazzesFk = foreignKey("methods_clazz_fkey", clazz, Clazzes)(r => r.name, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
-  }
-  /** Collection-like TableQuery object for table Methods */
-  lazy val Methods = new TableQuery(tag => new Methods(tag))
 
   /** Entity class storing rows of table Pakkages
    *  @param project Database column project SqlType(varchar)

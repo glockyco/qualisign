@@ -83,27 +83,6 @@ create table clazz_metrics_ckjm
         foreign key (clazz) references clazzes on delete cascade
 );
 
-create table methods
-(
-    clazz varchar not null,
-    name varchar not null,
-    access_modifier varchar not null,
-    constraint methods_pkey
-        primary key (name),
-    constraint methods_clazz_fkey
-        foreign key (clazz) references clazzes on delete cascade
-);
-
-create table method_metrics_ckjm
-(
-    method varchar not null,
-    cc int not null,
-    constraint method_metrics_ckjm_pkey
-        primary key (method),
-    constraint method_metrics_ckjm_method_fkey
-        foreign key (method) references methods on delete cascade
-);
-
 create table pattern_instances
 (
     id uuid not null,

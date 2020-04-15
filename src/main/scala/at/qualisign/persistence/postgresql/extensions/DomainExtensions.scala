@@ -85,25 +85,6 @@ object DomainExtensions {
     }
   }
 
-  implicit class MethodAsRowExtension(method: Method) {
-    def asRow: Tables.MethodsRow = {
-      Tables.MethodsRow(
-        method.clazz,
-        method.name,
-        method.accessModifier,
-      )
-    }
-  }
-
-  implicit class MethodMetricsCkjmAsRowExtension(metrics: MethodMetricsCkjm) {
-    def asRow: Tables.MethodMetricsCkjmRow = {
-      Tables.MethodMetricsCkjmRow(
-        metrics.method,
-        metrics.cc,
-      )
-    }
-  }
-
   implicit class PatternInstanceAsRowExtension(patternInstance: PatternInstance) {
     def asRow: Tables.PatternInstancesRow = {
       Tables.PatternInstancesRow(
