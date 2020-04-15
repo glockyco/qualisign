@@ -65,6 +65,7 @@ object DomainExtensions {
         metrics.cam,
         metrics.cbm,
         metrics.cbo,
+        metrics.cc,
         metrics.ce,
         metrics.dam,
         metrics.dit,

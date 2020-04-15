@@ -51,6 +51,7 @@ trait Tables {
    *  @param cam Database column cam SqlType(float8)
    *  @param cbm Database column cbm SqlType(int4)
    *  @param cbo Database column cbo SqlType(int4)
+   *  @param cc Database column cc SqlType(int4)
    *  @param ce Database column ce SqlType(int4)
    *  @param dam Database column dam SqlType(float8)
    *  @param dit Database column dit SqlType(int4)
@@ -66,17 +67,17 @@ trait Tables {
    *  @param npm Database column npm SqlType(int4)
    *  @param rfc Database column rfc SqlType(int4)
    *  @param wmc Database column wmc SqlType(int4) */
-  case class ClazzMetricsCkjmRow(clazz: String, amc: Double, ca: Int, cam: Double, cbm: Int, cbo: Int, ce: Int, dam: Double, dit: Int, ic: Int, lcom: Int, lcom3: Double, loc: Int, mfa: Double, moa: Int, noc: Int, nom: Int, nop: Int, npm: Int, rfc: Int, wmc: Int)
+  case class ClazzMetricsCkjmRow(clazz: String, amc: Double, ca: Int, cam: Double, cbm: Int, cbo: Int, cc: Int, ce: Int, dam: Double, dit: Int, ic: Int, lcom: Int, lcom3: Double, loc: Int, mfa: Double, moa: Int, noc: Int, nom: Int, nop: Int, npm: Int, rfc: Int, wmc: Int)
   /** GetResult implicit for fetching ClazzMetricsCkjmRow objects using plain SQL queries */
   implicit def GetResultClazzMetricsCkjmRow(implicit e0: GR[String], e1: GR[Double], e2: GR[Int]): GR[ClazzMetricsCkjmRow] = GR{
     prs => import prs._
-    ClazzMetricsCkjmRow.tupled((<<[String], <<[Double], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Double], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
+    ClazzMetricsCkjmRow.tupled((<<[String], <<[Double], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Double], <<[Int], <<[Double], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int], <<[Int]))
   }
   /** Table description of table clazz_metrics_ckjm. Objects of this class serve as prototypes for rows in queries. */
   class ClazzMetricsCkjm(_tableTag: Tag) extends profile.api.Table[ClazzMetricsCkjmRow](_tableTag, "clazz_metrics_ckjm") {
-    def * = (clazz, amc, ca, cam, cbm, cbo, ce, dam, dit, ic, lcom, lcom3, loc, mfa, moa, noc, nom, nop, npm, rfc, wmc) <> (ClazzMetricsCkjmRow.tupled, ClazzMetricsCkjmRow.unapply)
+    def * = (clazz, amc, ca, cam, cbm, cbo, cc, ce, dam, dit, ic, lcom, lcom3, loc, mfa, moa, noc, nom, nop, npm, rfc, wmc) <> (ClazzMetricsCkjmRow.tupled, ClazzMetricsCkjmRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(clazz), Rep.Some(amc), Rep.Some(ca), Rep.Some(cam), Rep.Some(cbm), Rep.Some(cbo), Rep.Some(ce), Rep.Some(dam), Rep.Some(dit), Rep.Some(ic), Rep.Some(lcom), Rep.Some(lcom3), Rep.Some(loc), Rep.Some(mfa), Rep.Some(moa), Rep.Some(noc), Rep.Some(nom), Rep.Some(nop), Rep.Some(npm), Rep.Some(rfc), Rep.Some(wmc))).shaped.<>({r=>import r._; _1.map(_=> ClazzMetricsCkjmRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19.get, _20.get, _21.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(clazz), Rep.Some(amc), Rep.Some(ca), Rep.Some(cam), Rep.Some(cbm), Rep.Some(cbo), Rep.Some(cc), Rep.Some(ce), Rep.Some(dam), Rep.Some(dit), Rep.Some(ic), Rep.Some(lcom), Rep.Some(lcom3), Rep.Some(loc), Rep.Some(mfa), Rep.Some(moa), Rep.Some(noc), Rep.Some(nom), Rep.Some(nop), Rep.Some(npm), Rep.Some(rfc), Rep.Some(wmc))).shaped.<>({r=>import r._; _1.map(_=> ClazzMetricsCkjmRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get, _12.get, _13.get, _14.get, _15.get, _16.get, _17.get, _18.get, _19.get, _20.get, _21.get, _22.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column clazz SqlType(varchar), PrimaryKey */
     val clazz: Rep[String] = column[String]("clazz", O.PrimaryKey)
@@ -90,6 +91,8 @@ trait Tables {
     val cbm: Rep[Int] = column[Int]("cbm")
     /** Database column cbo SqlType(int4) */
     val cbo: Rep[Int] = column[Int]("cbo")
+    /** Database column cc SqlType(int4) */
+    val cc: Rep[Int] = column[Int]("cc")
     /** Database column ce SqlType(int4) */
     val ce: Rep[Int] = column[Int]("ce")
     /** Database column dam SqlType(float8) */

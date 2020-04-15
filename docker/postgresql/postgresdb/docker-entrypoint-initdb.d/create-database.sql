@@ -61,6 +61,7 @@ create table clazz_metrics_ckjm
     cam float not null,
     cbm int not null,
     cbo int not null,
+    cc int not null,
     ce int not null,
     dam float not null,
     dit int not null,

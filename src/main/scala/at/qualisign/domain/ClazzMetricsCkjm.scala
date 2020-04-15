@@ -7,6 +7,7 @@ case class ClazzMetricsCkjm(
   cam: Double,
   cbm: Int,
   cbo: Int,
+  cc: Int,
   ce: Int,
   dam: Double,
   dit: Int,

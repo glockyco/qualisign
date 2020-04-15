@@ -29,6 +29,7 @@ class CkjmMetricsPersistenceImpl(database: Database) extends CkjmMetricsPersiste
       val clazz = ClazzFactory.create(pakkage, classType)
 
       var clazzMethods = Seq[Method]()
+      var clazzMethodMetrics = Seq[MethodMetricsCkjm]()
 
       for (methodType: MethodType <- classType.getCc.getMethod.asScala) {
         val method = MethodFactory.create(clazz, methodType)
@@ -38,9 +39,10 @@ class CkjmMetricsPersistenceImpl(database: Database) extends CkjmMetricsPersiste
         methodMetrics :+= methodMetric
 
         clazzMethods :+= method
+        clazzMethodMetrics :+= methodMetric
       }
 
-      val clazzMetric = ClazzMetricsFactory.create(clazz, classType, clazzMethods)
+      val clazzMetric = ClazzMetricsFactory.create(clazz, classType, clazzMethods, clazzMethodMetrics)
 
       clazzes :+= clazz
       clazzMetrics :+= clazzMetric
