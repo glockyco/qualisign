@@ -5,13 +5,11 @@ import at.qualisign.domain.extensions.ProjectExtensions._
 import at.qualisign.metrics.ckjm.{CkjmMetricsPersistence, CkjmMetricsReader}
 import at.qualisign.metrics.exceptions.MetricsPersistenceException
 
-import scala.concurrent.Future
-
 class MavenProjectMetricsPersistenceImpl(
   ckjmReader: CkjmMetricsReader,
   ckjmWriter: CkjmMetricsPersistence,
 ) extends MavenProjectMetricsPersistence {
-  override def persistProjectMetrics(project: Project): Future[Unit] = {
+  override def persistProjectMetrics(project: Project): Unit = {
     try {
       ckjmWriter.persistMetrics(project, ckjmReader.readMetrics(project.ckjmMetricsFile))
     } catch {

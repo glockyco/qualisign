@@ -118,19 +118,21 @@ object Application extends App {
 
   // @TODO: skip DB update if index update brought no new data
 
-  print("Updating index...")
-  updater.updateIndex()
-  println("done!")
-
-  print("Reading index...")
-  val projectsInIndex = reader.readProjects()
-  println("done!")
-
-  print("Persisting projects...")
-  Await.ready(projectRepository.insertIfNotExists(projectsInIndex), Duration.Inf)
-  println("done!")
+//  print("Updating index...")
+//  updater.updateIndex()
+//  println("done!")
+//
+//  print("Reading index...")
+//  val projectsInIndex = reader.readProjects()
+//  println("done!")
+//
+//  print("Persisting projects...")
+//  Await.ready(projectRepository.insertIfNotExists(projectsInIndex), Duration.Inf)
+//  println("done!")
 
   processor.processProjects()
+
+  Thread.sleep(10000);
 }
 
 class ProjectProcessor(
@@ -152,7 +154,7 @@ class ProjectProcessor(
     }
 
     print("Reading projects...")
-    val projects: Seq[Project] = Await.result(projectRepository.readAllWithSources(), Duration.Inf).slice(0, 1000)
+    val projects: Seq[Project] = Await.result(projectRepository.readAllWithSources(), Duration.Inf)//.slice(0, 100000)
     println("done!")
 
     //--------------------------------------------------------------------------
@@ -183,7 +185,7 @@ class ProjectProcessor(
     //--------------------------------------------------------------------------
 
     print("Reading eligible projects...")
-    val eligibleProjects: Seq[Project] = Await.result(projectRepository.readEligibleForAnalysis(), Duration.Inf)
+    val eligibleProjects: Seq[Project] = Await.result(projectRepository.readEligibleForAnalysis(), Duration.Inf)//.slice(0, 100)
     println("done!")
 
     time { eligibleProjects.par.foreach { project: Project =>
@@ -247,7 +249,8 @@ class ProjectProcessor(
   }
 
   def executeSteps(project: Project, steps: Seq[ProcessingStep]): Try[Project] = {
-    val filteredSteps = steps.filter(step => step.status(project) == ProcessingStatus.PENDING)
+    //val filteredSteps = steps.filter(step => step.status(project) == ProcessingStatus.PENDING)
+    val filteredSteps = steps.filter(step => step.isInstanceOf[MetricsPersistenceStep] && step.status(project) == ProcessingStatus.SUCCEEDED)
     var p: Project = project
 
     for (step: ProcessingStep <- filteredSteps) {

@@ -7,12 +7,11 @@ import at.qualisign.persistence.postgresql.extensions.DomainExtensions._
 import slick.jdbc.PostgresProfile.api._
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success}
 
 class CkjmMetricsPersistenceImpl(database: Database) extends CkjmMetricsPersistence {
-  override def persistMetrics(project: Project, ckjmType: CkjmType): Future[Unit] = {
+  override def persistMetrics(project: Project, ckjmType: CkjmType): Unit = {
     var pakkages = Seq[Pakkage]()
 
     var clazzes = Seq[Clazz]()
@@ -49,7 +48,7 @@ class CkjmMetricsPersistenceImpl(database: Database) extends CkjmMetricsPersiste
       DBIO.seq(clazzMetrics.map(x => Tables.ClazzMetricsCkjm.insertOrUpdate(x.asRow)): _ *),
     ).asTry.map({
       case Success(_) => // do nothing
-      case Failure(value) => println(value)
+      case Failure(exception) => throw exception
     })
 
     database.run(actions)

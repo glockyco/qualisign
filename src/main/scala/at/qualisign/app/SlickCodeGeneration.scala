@@ -6,12 +6,12 @@ object SlickCodeGeneration extends App {
   slick.codegen.SourceCodeGenerator.run(
     "slick.jdbc.PostgresProfile",
     "org.postgresql.Driver",
-    "jdbc:postgresql://localhost:9301/postgres",
+    "jdbc:postgresql://localhost:5432/postgres",
     "src/main/scala/",
     "at.qualisign.persistence",
     Some("postgres"),
     Some("postgres"),
-    true,
-    false
+    ignoreInvalidDefaults = true,
+    outputToMultipleFiles = false,
   )
 }
